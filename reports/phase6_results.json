@@ -1,0 +1,645 @@
+{
+  "dropped_rows": {
+    "dev": 12553,
+    "test": 1716
+  },
+  "cv": [
+    {
+      "model": "Decision Tree",
+      "params": {
+        "class_weight": "balanced",
+        "criterion": "gini",
+        "max_depth": null,
+        "min_samples_leaf": 50
+      },
+      "cv_macro_f1": [
+        0.5190562567943968,
+        0.00570719369817859
+      ],
+      "cv_em_recall": [
+        0.5855599772598068,
+        0.008711304745595455
+      ],
+      "cv_accuracy": [
+        0.5393398221004867,
+        0.006532247020730004
+      ]
+    },
+    {
+      "model": "Random Forest",
+      "params": {
+        "class_weight": "balanced",
+        "max_depth": null,
+        "min_samples_leaf": 5
+      },
+      "cv_macro_f1": [
+        0.5430012048338904,
+        0.00342371169920711
+      ],
+      "cv_em_recall": [
+        0.598976691301876,
+        0.005759602111160406
+      ],
+      "cv_accuracy": [
+        0.5644913140970839,
+        0.003910823457785718
+      ]
+    },
+    {
+      "model": "Decision Tree depth-6 (app)",
+      "params": {
+        "class_weight": "balanced",
+        "criterion": "gini",
+        "min_samples_leaf": 100
+      },
+      "cv_macro_f1": [
+        0.4829219976671534,
+        0.0053622121801970395
+      ],
+      "cv_em_recall": [
+        0.5578169414440023,
+        0.014948109998448922
+      ],
+      "cv_accuracy": [
+        0.5019873142498266,
+        0.00627460920231728
+      ]
+    }
+  ],
+  "thresholds": {
+    "Decision Tree": [
+      0.22,
+      0.37
+    ],
+    "Random Forest": [
+      0.23,
+      0.4
+    ],
+    "Decision Tree depth-6 (app)": [
+      0.2,
+      0.45
+    ]
+  },
+  "test": {
+    "Majority class": {
+      "accuracy": 0.5477564480037687,
+      "macro_f1": 0.2359356769644397,
+      "emergency_recall": 0.0,
+      "under_triage_rate": 0.16181839594865152,
+      "over_triage_rate": 0.2904251560475798,
+      "emergency_to_at_least_urgent": 1.0,
+      "urgent_plus_recall": 1.0,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.5477564480037687,
+          "recall": 1.0,
+          "f1-score": 0.7078070308933191,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          0,
+          2466,
+          0
+        ],
+        [
+          0,
+          4651,
+          0
+        ],
+        [
+          0,
+          1374,
+          0
+        ]
+      ]
+    },
+    "Decision Tree (argmax)": {
+      "accuracy": 0.5258509009539513,
+      "macro_f1": 0.514512721896569,
+      "emergency_recall": 0.6011644832605532,
+      "under_triage_rate": 0.20892709928159228,
+      "over_triage_rate": 0.2652219997644565,
+      "emergency_to_at_least_urgent": 0.8529839883551674,
+      "urgent_plus_recall": 0.7629875518672199,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.5384615384615384,
+          "recall": 0.67558799675588,
+          "f1-score": 0.5992805755395684,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.7153734590282813,
+          "recall": 0.42420984734465705,
+          "f1-score": 0.5325954919692266,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.3129973474801061,
+          "recall": 0.6011644832605532,
+          "f1-score": 0.41166209818091204,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          1666,
+          439,
+          361
+        ],
+        [
+          1226,
+          1973,
+          1452
+        ],
+        [
+          202,
+          346,
+          826
+        ]
+      ]
+    },
+    "Decision Tree (thresholds)": {
+      "accuracy": 0.39135555293840535,
+      "macro_f1": 0.3985903851361574,
+      "emergency_recall": 0.8187772925764192,
+      "under_triage_rate": 0.08232245907431399,
+      "over_triage_rate": 0.5263219879872807,
+      "emergency_to_at_least_urgent": 0.9526928675400291,
+      "urgent_plus_recall": 0.9145228215767635,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.6249089584850692,
+          "recall": 0.34793187347931875,
+          "f1-score": 0.4469914040114613,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.6074342701722575,
+          "recall": 0.28811008385293485,
+          "f1-score": 0.3908414758640805,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.22903094462540716,
+          "recall": 0.8187772925764192,
+          "f1-score": 0.35793827553293034,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          858,
+          682,
+          926
+        ],
+        [
+          450,
+          1340,
+          2861
+        ],
+        [
+          65,
+          184,
+          1125
+        ]
+      ]
+    },
+    "Random Forest (argmax)": {
+      "accuracy": 0.5504651984454128,
+      "macro_f1": 0.5380387198611877,
+      "emergency_recall": 0.6149927219796215,
+      "under_triage_rate": 0.21293133906489223,
+      "over_triage_rate": 0.23660346248969497,
+      "emergency_to_at_least_urgent": 0.846433770014556,
+      "urgent_plus_recall": 0.7526970954356846,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.5405488744989208,
+          "recall": 0.7108678021086781,
+          "f1-score": 0.6141180592047644,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.7377398720682303,
+          "recall": 0.4463556224467856,
+          "f1-score": 0.5561955793703952,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.34716516023007393,
+          "recall": 0.6149927219796215,
+          "f1-score": 0.44380252100840334,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          1753,
+          420,
+          293
+        ],
+        [
+          1279,
+          2076,
+          1296
+        ],
+        [
+          211,
+          318,
+          845
+        ]
+      ]
+    },
+    "Random Forest (thresholds)": {
+      "accuracy": 0.4133788717465552,
+      "macro_f1": 0.4225693086435373,
+      "emergency_recall": 0.8398835516739447,
+      "under_triage_rate": 0.08220468731598163,
+      "over_triage_rate": 0.5044164409374632,
+      "emergency_to_at_least_urgent": 0.9556040756914119,
+      "urgent_plus_recall": 0.910539419087137,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.6423357664233577,
+          "recall": 0.39253852392538524,
+          "f1-score": 0.48728920211427135,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.6003460207612457,
+          "recall": 0.2984304450655773,
+          "f1-score": 0.3986787304322849,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.24700342465753425,
+          "recall": 0.8398835516739447,
+          "f1-score": 0.38173999338405556,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          968,
+          765,
+          733
+        ],
+        [
+          478,
+          1388,
+          2785
+        ],
+        [
+          61,
+          159,
+          1154
+        ]
+      ]
+    },
+    "Decision Tree depth-6 (app) (argmax)": {
+      "accuracy": 0.4951124720292074,
+      "macro_f1": 0.48620709410043417,
+      "emergency_recall": 0.5946142649199417,
+      "under_triage_rate": 0.24661406194794488,
+      "over_triage_rate": 0.25827346602284773,
+      "emergency_to_at_least_urgent": 0.7860262008733624,
+      "urgent_plus_recall": 0.6960995850622407,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.48509561304836896,
+          "recall": 0.6995133819951338,
+          "f1-score": 0.5728993689804052,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.7232375979112271,
+          "recall": 0.35734250698774456,
+          "f1-score": 0.47834220751187223,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.3098217671596511,
+          "recall": 0.5946142649199417,
+          "f1-score": 0.40737970580902516,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          1725,
+          373,
+          368
+        ],
+        [
+          1537,
+          1662,
+          1452
+        ],
+        [
+          294,
+          263,
+          817
+        ]
+      ]
+    },
+    "Decision Tree depth-6 (app) (thresholds)": {
+      "accuracy": 0.35225532917206454,
+      "macro_f1": 0.34793830535834097,
+      "emergency_recall": 0.7933042212518195,
+      "under_triage_rate": 0.18419503003179838,
+      "over_triage_rate": 0.4635496407961371,
+      "emergency_to_at_least_urgent": 0.8144104803493449,
+      "urgent_plus_recall": 0.7452282157676349,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.4995109227257907,
+          "recall": 0.6212489862124899,
+          "f1-score": 0.5537682992951383,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.7055449330783938,
+          "recall": 0.07933777682218877,
+          "f1-score": 0.14263625821414766,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.22240359110385635,
+          "recall": 0.7933042212518195,
+          "f1-score": 0.34741035856573704,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          1532,
+          125,
+          809
+        ],
+        [
+          1280,
+          369,
+          3002
+        ],
+        [
+          255,
+          29,
+          1090
+        ]
+      ]
+    },
+    "Rules only": {
+      "accuracy": 0.45401012837121657,
+      "macro_f1": 0.418530624847346,
+      "emergency_recall": 0.28602620087336245,
+      "under_triage_rate": 0.3360028265222,
+      "over_triage_rate": 0.20998704510658345,
+      "emergency_to_at_least_urgent": 0.7358078602620087,
+      "urgent_plus_recall": 0.629045643153527,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.3832781456953642,
+          "recall": 0.5632603406326034,
+          "f1-score": 0.45615763546798027,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.5779202676331195,
+          "recall": 0.4457105998709955,
+          "f1-score": 0.5032774945375091,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.30703125,
+          "recall": 0.28602620087336245,
+          "f1-score": 0.2961567445365486,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          1389,
+          896,
+          181
+        ],
+        [
+          1872,
+          2073,
+          706
+        ],
+        [
+          363,
+          618,
+          393
+        ]
+      ]
+    },
+    "Rules + Decision Tree": {
+      "accuracy": 0.3659168531386174,
+      "macro_f1": 0.35916463625104106,
+      "emergency_recall": 0.8347889374090247,
+      "under_triage_rate": 0.059710281474502414,
+      "over_triage_rate": 0.5743728653868803,
+      "emergency_to_at_least_urgent": 0.9745269286754003,
+      "urgent_plus_recall": 0.9477178423236514,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.6358381502890174,
+          "recall": 0.22303325223033252,
+          "f1-score": 0.3302311618132693,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.5593018643395478,
+          "recall": 0.30316061062137173,
+          "f1-score": 0.3931957612939208,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.2246816846229187,
+          "recall": 0.8347889374090247,
+          "f1-score": 0.35406698564593303,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          550,
+          919,
+          997
+        ],
+        [
+          280,
+          1410,
+          2961
+        ],
+        [
+          35,
+          192,
+          1147
+        ]
+      ]
+    },
+    "Rules + Random Forest": {
+      "accuracy": 0.3873513131551054,
+      "macro_f1": 0.382945497135833,
+      "emergency_recall": 0.8508005822416302,
+      "under_triage_rate": 0.05923919444117301,
+      "over_triage_rate": 0.5534094924037216,
+      "emergency_to_at_least_urgent": 0.9759825327510917,
+      "urgent_plus_recall": 0.9450622406639004,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.6541274817136886,
+          "recall": 0.25385239253852393,
+          "f1-score": 0.36576102833771545,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.5537435137138621,
+          "recall": 0.321221242743496,
+          "f1-score": 0.40658593005851135,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.24172870140612077,
+          "recall": 0.8508005822416302,
+          "f1-score": 0.37648953301127214,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          626,
+          1032,
+          808
+        ],
+        [
+          298,
+          1494,
+          2859
+        ],
+        [
+          33,
+          172,
+          1169
+        ]
+      ]
+    },
+    "APP: Rules + depth-6 DT (ML capped at URGENT)": {
+      "accuracy": 0.5463431869037805,
+      "macro_f1": 0.46559617253188623,
+      "emergency_recall": 0.28602620087336245,
+      "under_triage_rate": 0.18984807443175128,
+      "over_triage_rate": 0.26380873866446825,
+      "emergency_to_at_least_urgent": 0.9163027656477438,
+      "urgent_plus_recall": 0.8761825726141079,
+      "per_class": {
+        "ROUTINE": {
+          "precision": 0.5554231227651967,
+          "recall": 0.37793998377939986,
+          "f1-score": 0.4498069498069498,
+          "support": 2466.0
+        },
+        "URGENT": {
+          "precision": 0.5989517440809687,
+          "recall": 0.7125349387228553,
+          "f1-score": 0.6508248232521603,
+          "support": 4651.0
+        },
+        "EMERGENCY": {
+          "precision": 0.30703125,
+          "recall": 0.28602620087336245,
+          "f1-score": 0.2961567445365486,
+          "support": 1374.0
+        }
+      },
+      "confusion": [
+        [
+          932,
+          1353,
+          181
+        ],
+        [
+          631,
+          3314,
+          706
+        ],
+        [
+          115,
+          866,
+          393
+        ]
+      ]
+    }
+  },
+  "dt_importance_top": {
+    "age_years": 0.2669,
+    "sym_abdominal_pain": 0.1037,
+    "sym_shortness_of_breath": 0.0914,
+    "sym_chest_pain": 0.0905,
+    "pain_score": 0.057,
+    "sym_limb_joint_pain": 0.0448,
+    "n_symptoms": 0.0418,
+    "sym_low_mood": 0.0281,
+    "sym_seizure": 0.0247,
+    "sym_vomiting": 0.0185,
+    "sym_unconsciousness": 0.0148,
+    "sym_hallucinations": 0.0141,
+    "sym_toothache": 0.014,
+    "sym_rash": 0.0139,
+    "sym_back_pain": 0.0131
+  },
+  "rf_permutation_top": {
+    "age_years": 0.0425,
+    "sym_abdominal_pain": 0.0282,
+    "sym_shortness_of_breath": 0.0254,
+    "sym_chest_pain": 0.0174,
+    "sym_limb_joint_pain": 0.0142,
+    "sym_sore_throat": 0.0052,
+    "sym_ear_pain": 0.0039,
+    "sym_nausea": 0.0035,
+    "sym_flank_pain": 0.0035,
+    "sym_injury": 0.0032,
+    "sym_cough": 0.0031,
+    "sym_vaginal_bleeding": 0.003,
+    "sym_back_pain": 0.0029,
+    "sym_rash": 0.0028,
+    "sym_palpitations": 0.0026
+  },
+  "dt_depth": 36,
+  "dt_leaves": 897,
+  "dt_app_leaves": 49,
+  "dt_app_importance_top": {
+    "age_years": 0.304,
+    "sym_abdominal_pain": 0.1747,
+    "sym_shortness_of_breath": 0.1553,
+    "sym_chest_pain": 0.1537,
+    "sym_limb_joint_pain": 0.0641,
+    "pain_score": 0.0444,
+    "sym_low_mood": 0.044,
+    "sym_seizure": 0.0384,
+    "n_symptoms": 0.0148,
+    "sym_cough": 0.0049,
+    "sym_vomiting": 0.0015,
+    "pain_known": 0.0004,
+    "sym_allergic_reaction": 0.0,
+    "sym_bleeding": 0.0,
+    "sym_blood_in_stool": 0.0
+  }
+}

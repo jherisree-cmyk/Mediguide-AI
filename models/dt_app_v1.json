@@ -1,0 +1,151 @@
+{
+  "model": "Decision Tree depth-6 (app)",
+  "version": "v1",
+  "trained": "2026-11-10",
+  "sklearn": "1.9.1",
+  "features": [
+    "sym_abdominal_pain",
+    "sym_allergic_reaction",
+    "sym_anxiety",
+    "sym_back_pain",
+    "sym_bleeding",
+    "sym_blood_in_stool",
+    "sym_blood_in_urine",
+    "sym_body_ache",
+    "sym_chest_pain",
+    "sym_chest_tightness",
+    "sym_chills",
+    "sym_confusion",
+    "sym_constipation",
+    "sym_cough",
+    "sym_coughing_blood",
+    "sym_diarrhoea",
+    "sym_difficulty_swallowing",
+    "sym_dizziness",
+    "sym_ear_pain",
+    "sym_eye_pain",
+    "sym_face_throat_swelling",
+    "sym_fainting",
+    "sym_fatigue",
+    "sym_fever",
+    "sym_flank_pain",
+    "sym_focal_weakness",
+    "sym_general_weakness",
+    "sym_hallucinations",
+    "sym_head_injury",
+    "sym_headache",
+    "sym_injury",
+    "sym_itching",
+    "sym_limb_joint_pain",
+    "sym_loss_of_appetite",
+    "sym_low_mood",
+    "sym_malaise",
+    "sym_nasal_congestion",
+    "sym_nausea",
+    "sym_neck_pain",
+    "sym_neck_stiffness",
+    "sym_nosebleed",
+    "sym_numbness",
+    "sym_painful_urination",
+    "sym_palpitations",
+    "sym_pelvic_pain",
+    "sym_rash",
+    "sym_seizure",
+    "sym_shortness_of_breath",
+    "sym_sore_throat",
+    "sym_speech_difficulty",
+    "sym_sweating",
+    "sym_swelling",
+    "sym_toothache",
+    "sym_unconsciousness",
+    "sym_urinary_frequency",
+    "sym_urinary_retention",
+    "sym_vaginal_bleeding",
+    "sym_vision_problem",
+    "sym_vomiting",
+    "sym_vomiting_blood",
+    "sym_weight_loss",
+    "sym_wheezing",
+    "age_years",
+    "pain_known",
+    "pain_score",
+    "n_symptoms"
+  ],
+  "classes": [
+    "ROUTINE",
+    "URGENT",
+    "EMERGENCY"
+  ],
+  "params": {
+    "ccp_alpha": 0.0,
+    "class_weight": "balanced",
+    "criterion": "gini",
+    "max_depth": 6,
+    "max_features": null,
+    "max_leaf_nodes": null,
+    "min_impurity_decrease": 0.0,
+    "min_samples_leaf": 100,
+    "min_samples_split": 2,
+    "min_weight_fraction_leaf": 0.0,
+    "monotonic_cst": null,
+    "random_state": 42,
+    "splitter": "best"
+  },
+  "thresholds": {
+    "t_emergency": 0.2,
+    "t_urgent_or_higher": 0.45
+  },
+  "train_data": {
+    "source": "NHAMCS ED 2016-2021",
+    "rows": 61388,
+    "sha256_16": "31b49d20de48b8c5"
+  },
+  "test_metrics_2022": {
+    "accuracy": 0.35225532917206454,
+    "macro_f1": 0.34793830535834097,
+    "emergency_recall": 0.7933042212518195,
+    "under_triage_rate": 0.18419503003179838,
+    "over_triage_rate": 0.4635496407961371,
+    "emergency_to_at_least_urgent": 0.8144104803493449,
+    "urgent_plus_recall": 0.7452282157676349,
+    "per_class": {
+      "ROUTINE": {
+        "precision": 0.4995109227257907,
+        "recall": 0.6212489862124899,
+        "f1-score": 0.5537682992951383,
+        "support": 2466.0
+      },
+      "URGENT": {
+        "precision": 0.7055449330783938,
+        "recall": 0.07933777682218877,
+        "f1-score": 0.14263625821414766,
+        "support": 4651.0
+      },
+      "EMERGENCY": {
+        "precision": 0.22240359110385635,
+        "recall": 0.7933042212518195,
+        "f1-score": 0.34741035856573704,
+        "support": 1374.0
+      }
+    },
+    "confusion": [
+      [
+        1532,
+        125,
+        809
+      ],
+      [
+        1280,
+        369,
+        3002
+      ],
+      [
+        255,
+        29,
+        1090
+      ]
+    ]
+  },
+  "app_policy": "ML output capped at URGENT; EMERGENCY only from red-flag rules",
+  "status": "EDUCATIONAL PROTOTYPE - not clinically validated"
+}

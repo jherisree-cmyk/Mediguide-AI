@@ -1,0 +1,2 @@
+A. question generation: 18/18 correct
+B. end-to-end with answers: 10/10 correct

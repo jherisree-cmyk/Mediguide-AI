@@ -1,0 +1,38 @@
+# Experiment 5 - follow-up questions and end-to-end assessment.
+# SYNTHETIC, developer-written: software testing only.
+#
+# Part A (questions): status, must_ask / must_not_ask (question ids), must_offer (checklist options)
+# Part B (end-to-end): answers -> expected final level
+questions:
+  - {id: F01, lang: en, text: "I have chest pain", status: needs_followup,
+     must_ask: [checklist, age, "onset:chest_pain", pain], must_offer: [radiating_pain, sweating, shortness_of_breath]}
+  - {id: F02, lang: en, text: "I can't breathe", status: complete, level: EMERGENCY, no_questions: true}
+  - {id: F03, lang: en, text: "My face is drooping", status: complete, level: EMERGENCY, no_questions: true}
+  - {id: F04, lang: en, text: "I have a fever", status: needs_followup, must_ask: [age, "duration:fever", checklist], must_offer: [neck_stiffness]}
+  - {id: F05, lang: en, text: "I have had a fever for 6 days, I am 30 years old", must_not_ask: ["duration:fever", age]}
+  - {id: F06, lang: en, text: "I have a headache", status: needs_followup, must_ask: [checklist, "onset:headache", pain, age],
+     must_offer: [focal_weakness, neck_stiffness]}
+  - {id: F07, lang: en, text: "Severe headache that started suddenly, I'm 40 years old", status: complete, level: EMERGENCY, no_questions: true}
+  - {id: F08, lang: en, text: "runny nose and sneezing, I am 25 years old", status: complete, no_questions: true}
+  - {id: F09, lang: en, text: "I have no chest pain, just a cough, I am 30 years old", must_not_ask: ["onset:chest_pain", pain]}
+  - {id: F10, lang: en, text: "something is wrong with me", status: needs_followup, must_ask: [emergency_checklist, age]}
+  - {id: F11, lang: en, text: "I have vaginal bleeding", status: needs_followup, must_ask: [pregnant]}
+  - {id: F12, lang: en, text: "I have vaginal bleeding, I am 70 years old", must_not_ask: [pregnant]}
+  - {id: F13, lang: te, text: "నాకు ఛాతీ నొప్పి ఉంది", status: needs_followup, must_ask: [checklist, "onset:chest_pain", pain, age]}
+  - {id: F14, lang: hi, text: "मुझे सिरदर्द है", status: needs_followup, must_ask: ["onset:headache", pain]}
+  - {id: F15, lang: en, text: "Chest pain that started suddenly, 8/10, I am 50 years old", status: complete, level: EMERGENCY, no_questions: true}
+  - {id: F16, lang: en, text: "Stomach pain, 3/10, I am 30 years old", must_not_ask: [pain, age, "onset:abdominal_pain"]}
+  - {id: F17, lang: en, text: "I want to end my life", status: complete, level: EMERGENCY, no_questions: true}
+  - {id: F18, lang: hi, text: "मुझे कुछ ठीक नहीं लग रहा", status: needs_followup, must_ask: [emergency_checklist]}
+
+end_to_end:
+  - {id: G01, lang: en, text: "I have chest pain", answers: {checklist: [radiating_pain], age: 50}, level: EMERGENCY}
+  - {id: G02, lang: en, text: "I have chest pain", answers: {checklist: [none], age: 45, "onset:chest_pain": gradual, pain: 4}, level: URGENT}
+  - {id: G03, lang: te, text: "నాకు జ్వరం ఉంది", answers: {checklist: [none], age: 0.1}, level: EMERGENCY}
+  - {id: G04, lang: en, text: "something is wrong with me", answers: {emergency_checklist: [none], age: 30}, level: URGENT}
+  - {id: G05, lang: en, text: "something is wrong with me", answers: {emergency_checklist: [seizure]}, level: EMERGENCY}
+  - {id: G06, lang: en, text: "I have vaginal bleeding", answers: {pregnant: "yes", checklist: [dizziness], age: 28}, level: EMERGENCY}
+  - {id: G07, lang: hi, text: "मुझे सिरदर्द है", answers: {"onset:headache": sudden, pain: 9, age: 40, checklist: [none]}, level: EMERGENCY}
+  - {id: G08, lang: en, text: "I have a headache", answers: {checklist: [none], "onset:headache": gradual, pain: 3}, level: URGENT, note: age_missing}
+  - {id: G09, lang: en, text: "I have had a fever", answers: {checklist: [none], age: 30, "duration:fever": d5p}, level: URGENT}
+  - {id: G10, lang: en, text: "runny nose and sneezing, I am 25 years old", answers: {}, level: ROUTINE}

@@ -1,0 +1,23 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Data: raw downloads and processed tables are re-created by scripts/ (see data/DATASETS.md)
+data/raw/
+data/processed/
+# Local app database (contains encrypted user data)
+data/app/
+*.db
+
+# Secrets: signing + encryption keys. NEVER commit.
+.env
+
+# 16 MB comparison model; re-create with scripts/train_models.py
+# (the app's own model, models/dt_app_v1.joblib, is only 6 KB and IS committed)
+models/rf_v1.joblib
+
+# Frontend
+node_modules/
+frontend/dist/

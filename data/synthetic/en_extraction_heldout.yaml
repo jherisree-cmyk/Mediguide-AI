@@ -1,0 +1,38 @@
+# Experiment 1 - English symptom extraction, HELD-OUT set.
+# Written AFTER the error-analysis fixes on the dev set, and scored ONCE without further tuning.
+# SYNTHETIC: software testing only, not clinical data.
+cases:
+  - {id: H01, cat: basic, text: "I've got a runny nose, a sore throat and a slight temperature.", present: [nasal_congestion, sore_throat, fever],
+     attrs: {fever: {severity: mild}}}
+  - {id: H02, cat: basic, text: "my knee is swollen and it hurts when I walk", present: [swelling]}
+  - {id: H03, cat: basic, text: "Feeling sick and threw up twice this morning", present: [nausea, vomiting]}
+  - {id: H04, cat: basic, text: "I have had diarrhoea for 4 days now", present: [diarrhoea], attrs: {diarrhoea: {duration_days: 4}}}
+  - {id: H05, cat: basic, text: "Terrible toothache since last night", present: [toothache], attrs: {toothache: {severity: severe, duration_days: 0.5}}}
+  - {id: H06, cat: basic, text: "I keep getting headaches on and off for a month", present: [headache],
+     attrs: {headache: {frequency: intermittent}}}
+  - {id: H07, cat: negation, text: "No vomiting today, but I still have stomach cramps", present: [abdominal_pain], negated: [vomiting]}
+  - {id: H08, cat: negation, text: "I don't feel dizzy any more, just tired", present: [fatigue], negated: [dizziness]}
+  - {id: H09, cat: negation, text: "There is no blood in my stool", present: [], negated: [blood_in_stool]}
+  - {id: H10, cat: negation, text: "Cough without fever", present: [cough], negated: [fever]}
+  - {id: H11, cat: negation, text: "She has not had a seizure but she seems confused", present: [confusion], negated: [seizure], subject: self}
+  - {id: H12, cat: negation, text: "I don't think I have a fever", present: [], negated: [fever]}
+  - {id: H13, cat: negation, text: "My breathing is not normal, I am short of breath", present: [shortness_of_breath]}
+  - {id: H14, cat: spelling, text: "terible headach and vomitting", present: [headache, vomiting], attrs: {headache: {severity: severe}}}
+  - {id: H15, cat: spelling, text: "I have diarrea and stomache", present: [diarrhoea, abdominal_pain]}
+  - {id: H16, cat: spelling, text: "Chest Pain And Sweating", present: [chest_pain, sweating]}
+  - {id: H17, cat: spelling, text: "my son has a high temprature", present: [fever], subject: other}
+  - {id: H18, cat: structure, text: "Since 3 days: fever, chills and body aches.", present: [fever, chills, body_ache],
+     attrs: {fever: {duration_days: 3}}}
+  - {id: H19, cat: structure, text: "Is it normal to feel this tired? I also have a cough.", present: [fatigue, cough]}
+  - {id: H20, cat: structure, text: "Pain in my lower stomach, 6/10, started gradually", present: [abdominal_pain],
+     attrs: {abdominal_pain: {pain_score: 6, onset: gradual}}}
+  - {id: H21, cat: structure, text: "Ear pain. Getting worse.", present: [ear_pain], attrs: {ear_pain: {progression: worsening}}}
+  - {id: H22, cat: structure, text: "I am a 70 year old man with blurred vision since this afternoon", present: [vision_problem], age_years: 70}
+  - {id: H23, cat: structure, text: "the rash came on suddenly after eating peanuts", present: [rash], attrs: {rash: {onset: sudden}}}
+  - {id: H24, cat: warning, text: "I suddenly can't move my left arm and my face looks droopy", present: [focal_weakness, face_droop]}
+  - {id: H25, cat: warning, text: "There is so much blood, the bleeding won't stop", present: [heavy_bleeding, bleeding]}
+  - {id: H26, cat: warning, text: "My mother passed out and now she is confused", present: [fainting, confusion], subject: other}
+  - {id: H27, cat: warning, text: "Heavy pressure in my chest and I feel sick", present: [chest_tightness, nausea]}
+  - {id: H28, cat: warning, text: "I feel like ending my life", present: [suicidal_thoughts]}
+  - {id: H29, cat: warning, text: "my tongue is swelling up and I can't breathe", present: [face_throat_swelling, severe_breathing_distress, shortness_of_breath]}
+  - {id: H30, cat: warning, text: "I'm 20 weeks pregnant and bleeding heavily", present: [pregnant, heavy_bleeding, bleeding]}

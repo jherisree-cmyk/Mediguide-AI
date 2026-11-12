@@ -1,0 +1,670 @@
+# MediGuide AI - multilingual symptom vocabulary
+# ------------------------------------------------------------------------------------
+# Each CONCEPT is one thing the NLP layer can recognise. Its `id` is the language-neutral
+# internal representation: Telugu, Hindi and English phrases all map to the same id.
+#
+#   kind      symptom  -> a model feature (linked to NHAMCS reason-for-visit codes)
+#             sign     -> a warning feature used ONLY by the safety rules (no model input)
+#             context  -> patient context (e.g. pregnancy) used by rules
+#   rfv       NHAMCS reason-for-visit codes (verified against data/processed/rfv_codes.csv)
+#   label     display name per language (shown back to the user for confirmation)
+#   terms     surface phrases per language, matched case-insensitively on tokens
+#
+# REVIEW STATUS: English terms - project draft.
+#                Telugu (te) and Hindi (hi) terms - DRAFT, PENDING NATIVE-SPEAKER AND
+#                CLINICIAN REVIEW (see docs/clinical_review_log.md).
+#
+# NOTE for the negation detector (Phase 3): some sign phrases CONTAIN a negation word
+# ("can't breathe", "won't stop bleeding", "రక్తం ఆగడం లేదు"). A negation cue that lies
+# INSIDE a matched phrase is part of the phrase and must not negate it.
+# ------------------------------------------------------------------------------------
+version: 1
+status: draft-unreviewed
+
+concepts:
+
+  # ===================== GENERAL =====================
+  - id: fever
+    kind: symptom
+    rfv: [10100]
+    label: {en: Fever, te: జ్వరం, hi: बुखार}
+    terms:
+      en: [fever, feverish, high temperature, temperature, running a temperature, pyrexia]
+      te: [జ్వరం, జ్వరము, ఒళ్ళు వేడిగా]
+      hi: [बुखार, बुख़ार, ज्वर, तेज़ बुखार, तेज बुखार]
+
+  - id: chills
+    kind: symptom
+    rfv: [10050, 10121, 10123]
+    label: {en: Chills or shivering, te: చలి / వణుకు, hi: ठंड लगना / कंपकंपी}
+    terms:
+      en: [chills, shivering, shivers, rigors, feeling cold, shaking with cold]
+      te: [చలి, వణుకు, చలి వణుకు]
+      hi: [ठंड लगना, ठंड लग रही, कंपकंपी, कपकपी]
+
+  - id: fatigue
+    kind: symptom
+    rfv: [10150]
+    label: {en: Tiredness, te: అలసట, hi: थकान}
+    terms:
+      en: [tired, tiredness, fatigue, fatigued, exhausted, exhaustion, no energy]
+      te: [అలసట, నీరసం, అలసటగా]
+      hi: [थकान, थकावट, थका हुआ, थकी हुई]
+
+  - id: general_weakness
+    kind: symptom
+    rfv: [10200]
+    label: {en: General weakness, te: బలహీనత, hi: कमजोरी}
+    terms:
+      en: [weakness, weak, feeling weak, generalised weakness, generalized weakness]
+      te: [బలహీనత, నిస్సత్తువ, బలహీనంగా]
+      hi: [कमजोरी, कमज़ोरी, कमजोर]
+
+  - id: malaise
+    kind: symptom
+    rfv: [10250]
+    label: {en: Feeling generally unwell, te: ఒంట్లో బాగోలేదు, hi: तबीयत ठीक नहीं}
+    terms:
+      en: [feeling unwell, unwell, malaise, feeling ill, not feeling well]
+      te: [ఒంట్లో బాగోలేదు, ఒంట్లో నలతగా, నలత]
+      hi: [तबीयत ठीक नहीं, तबीयत खराब, अस्वस्थ]
+
+  - id: fainting
+    kind: symptom
+    rfv: [10300]
+    label: {en: Fainting, te: స్పృహ తప్పడం, hi: बेहोश होना}
+    terms:
+      en: [fainted, fainting, feel faint, feeling faint, passed out, blacked out, syncope, collapsed]
+      te: [స్పృహ తప్పింది, స్పృహ తప్పడం, కళ్ళు తిరిగి పడిపోయాను, సొమ్మసిల్లి పడిపోయాను, స్పృహ తప్పి, స్పృహ కోల్పోయారు, స్పృహ కోల్పోయాను]
+      hi: [बेहोश हो गया, बेहोश हो गई, बेहोशी, चक्कर खाकर गिर, बेहोश हो गए, बेहोश हो गये, बेहोश हो जाना]
+
+  - id: swelling
+    kind: symptom
+    rfv: [10351, 19205, 19355, 19305, 19605, 19455, 18750]
+    label: {en: "Swelling (legs, feet or body)", te: వాపు, hi: सूजन}
+    terms:
+      en: [swelling, swollen, edema, oedema, puffy, swollen legs, swollen feet, swollen ankles]
+      te: [వాపు, కాళ్ళ వాపు, పాదాల వాపు]
+      hi: [सूजन, पैरों में सूजन, सूजा हुआ]
+
+  - id: sweating
+    kind: symptom
+    rfv: [10352]
+    label: {en: Sweating, te: చెమటలు, hi: पसीना}
+    terms:
+      en: [sweating, sweaty, sweats, cold sweat, clammy, perspiring]
+      te: [చెమటలు, చెమట పడుతోంది, చెమటలు పడుతున్నాయి]
+      hi: [पसीना, पसीना आ रहा, पसीने]
+
+  - id: loss_of_appetite
+    kind: symptom
+    rfv: [15702]
+    label: {en: Loss of appetite, te: ఆకలి లేకపోవడం, hi: भूख न लगना}
+    terms:
+      en: [loss of appetite, no appetite, not hungry, poor appetite, off food]
+      te: [ఆకలి లేదు, ఆకలి వేయడం లేదు, ఆకలి తగ్గింది]
+      hi: [भूख नहीं, भूख न लगना, भूख कम]
+
+  - id: weight_loss
+    kind: symptom
+    rfv: [10450]
+    label: {en: Weight loss, te: బరువు తగ్గడం, hi: वजन कम होना}
+    terms:
+      en: [weight loss, losing weight, lost weight]
+      te: [బరువు తగ్గడం, బరువు తగ్గాను]
+      hi: [वजन कम, वज़न कम, वजन घट]
+
+  # ===================== PAIN =====================
+  - id: chest_pain
+    kind: symptom
+    rfv: [10500, 10501]
+    label: {en: Chest pain, te: ఛాతీ నొప్పి, hi: सीने में दर्द}
+    terms:
+      en: [chest pain, pain in my chest, pain in the chest, chest hurts, chest ache, heart pain, chest pains]
+      te: [ఛాతీ నొప్పి, ఛాతిలో నొప్పి, గుండె నొప్పి, గుండెలో నొప్పి, ఛాతి నొప్పి, ఛాతిలో నొప్పి]
+      hi: [सीने में दर्द, छाती में दर्द, सीने का दर्द, सीना दर्द, दिल में दर्द]
+
+  - id: chest_tightness
+    kind: symptom
+    rfv: [10502]
+    label: {en: Chest pressure or tightness, te: ఛాతీ బిగుతు / బరువు, hi: सीने में जकड़न / भारीपन}
+    terms:
+      en: [chest tightness, tight chest, chest feels tight, chest pressure, pressure in my chest, heaviness in chest, heavy chest, chest feels heavy, squeezing in chest]
+      te: [ఛాతీ బిగుతుగా, ఛాతీ బరువుగా, ఛాతీ పట్టేసినట్టు, గుండె బరువుగా, ఛాతి బిగుతుగా, ఛాతి బరువుగా]
+      hi: [सीने में जकड़न, छाती में जकड़न, सीने में भारीपन, छाती में भारीपन, सीने में दबाव]
+
+  - id: abdominal_pain
+    kind: symptom
+    rfv: [15450, 15451, 15452, 15453]
+    label: {en: Abdominal (stomach) pain, te: కడుపు నొప్పి, hi: पेट दर्द}
+    terms:
+      en: [stomach pain, abdominal pain, belly pain, tummy pain, tummy ache, stomach ache, stomachache, pain in my stomach, stomach cramps, abdominal cramps, stomach pains, pain in my lower stomach, pain in my upper stomach]
+      te: [కడుపు నొప్పి, పొట్ట నొప్పి, కడుపులో నొప్పి]
+      hi: [पेट दर्द, पेट में दर्द, पेट में ऐंठन]
+
+  - id: headache
+    kind: symptom
+    rfv: [12100, 12101]
+    label: {en: Headache, te: తలనొప్పి, hi: सिरदर्द}
+    terms:
+      en: [headache, headaches, head pain, head hurts, head ache, migraine, pain in my head]
+      te: [తలనొప్పి, తల నొప్పి, తలలో నొప్పి]
+      hi: [सिरदर्द, सिर दर्द, सिर में दर्द, माइग्रेन]
+
+  - id: back_pain
+    kind: symptom
+    rfv: [19051, 19101]
+    label: {en: Back pain, te: నడుము / వెన్ను నొప్పి, hi: पीठ / कमर दर्द}
+    terms:
+      en: [back pain, backache, back ache, lower back pain, pain in my back, back hurts, lower back, upper back, my back hurts]
+      te: [నడుము నొప్పి, వెన్ను నొప్పి, వీపు నొప్పి]
+      hi: [पीठ दर्द, पीठ में दर्द, कमर दर्द, कमर में दर्द]
+
+  - id: neck_pain
+    kind: symptom
+    rfv: [19001]
+    label: {en: Neck pain, te: మెడ నొప్పి, hi: गर्दन दर्द}
+    terms:
+      en: [neck pain, pain in my neck, neck hurts, sore neck]
+      te: [మెడ నొప్పి]
+      hi: [गर्दन दर्द, गर्दन में दर्द]
+
+  - id: neck_stiffness
+    kind: symptom
+    rfv: [19003]
+    label: {en: Stiff neck, te: మెడ పట్టేయడం, hi: गर्दन में अकड़न}
+    terms:
+      en: [stiff neck, neck stiffness, neck is stiff, can't bend my neck, cannot bend my neck]
+      te: [మెడ పట్టేసింది, మెడ బిగుసుకుపోయింది, మెడ వంచలేకపోతున్నాను]
+      hi: [गर्दन में अकड़न, गर्दन अकड़, गर्दन नहीं मुड़]
+
+  - id: limb_joint_pain
+    kind: symptom
+    rfv: [19201, 19251, 19351, 19401, 19151, 19301, 19451, 19501, 19551, 19601, 19701]
+    label: {en: Limb or joint pain, te: కాళ్ళు / చేతులు / కీళ్ళ నొప్పి, hi: हाथ-पैर / जोड़ों में दर्द}
+    terms:
+      en: [leg pain, arm pain, knee pain, shoulder pain, hip pain, ankle pain, foot pain, hand pain, wrist pain, elbow pain, joint pain, pain in my leg, pain in my arm, pain in my knee, joint pains, leg pains, knee pains]
+      te: [కాలు నొప్పి, కాళ్ళ నొప్పులు, చేయి నొప్పి, మోకాలి నొప్పి, భుజం నొప్పి, కీళ్ళ నొప్పులు]
+      hi: [पैर में दर्द, पैर दर्द, हाथ में दर्द, घुटने में दर्द, घुटने का दर्द, कंधे में दर्द, जोड़ों में दर्द, जोड़ों का दर्द]
+
+  - id: body_ache
+    kind: symptom
+    rfv: [19651, 10601]
+    label: {en: Body aches, te: ఒళ్ళు నొప్పులు, hi: बदन दर्द}
+    terms:
+      en: [body ache, body aches, body pain, aching all over, muscle pain, muscle aches, myalgia, body pains, muscle pains]
+      te: [ఒళ్ళు నొప్పులు, శరీర నొప్పులు, కండరాల నొప్పి]
+      hi: [बदन दर्द, शरीर में दर्द, शरीर दर्द, मांसपेशियों में दर्द]
+
+  - id: flank_pain
+    kind: symptom
+    rfv: [10552]
+    label: {en: Side (flank) pain, te: పక్క నొప్పి, hi: बगल / पसली के नीचे दर्द}
+    terms:
+      en: [side pain, flank pain, pain in my side, kidney pain]
+      te: [పక్క నొప్పి, పక్కటెముకల కింద నొప్పి]
+      hi: [बगल में दर्द, पसली के नीचे दर्द, किडनी में दर्द]
+
+  - id: ear_pain
+    kind: symptom
+    rfv: [13551]
+    label: {en: Ear pain, te: చెవి నొప్పి, hi: कान दर्द}
+    terms:
+      en: [earache, ear ache, ear pain, ear hurts, pain in my ear]
+      te: [చెవి నొప్పి, చెవిలో నొప్పి]
+      hi: [कान दर्द, कान में दर्द]
+
+  - id: sore_throat
+    kind: symptom
+    rfv: [14550, 14551, 14552]
+    label: {en: Sore throat, te: గొంతు నొప్పి, hi: गले में दर्द}
+    terms:
+      en: [sore throat, throat pain, throat hurts, painful throat, scratchy throat]
+      te: [గొంతు నొప్పి, గొంతు గరగర, గొంతులో నొప్పి]
+      hi: [गले में दर्द, गला खराब, गले में खराश, गला दर्द]
+
+  - id: toothache
+    kind: symptom
+    rfv: [15001, 15000]
+    label: {en: Toothache, te: పంటి నొప్పి, hi: दांत दर्द}
+    terms:
+      en: [toothache, tooth ache, tooth pain, dental pain]
+      te: [పంటి నొప్పి, పన్ను నొప్పి]
+      hi: [दांत दर्द, दाँत दर्द, दांत में दर्द]
+
+  - id: eye_pain
+    kind: symptom
+    rfv: [13201]
+    label: {en: Eye pain, te: కంటి నొప్పి, hi: आंख में दर्द}
+    terms:
+      en: [eye pain, eye hurts, pain in my eye, painful eye]
+      te: [కంటి నొప్పి, కళ్ళ నొప్పి]
+      hi: [आंख में दर्द, आँख में दर्द, आंखों में दर्द]
+
+  - id: pelvic_pain
+    kind: symptom
+    rfv: [17751]
+    label: {en: Pelvic / lower belly pain, te: పొత్తికడుపు నొప్పి, hi: पेड़ू में दर्द}
+    terms:
+      en: [pelvic pain, pain in my pelvis]
+      te: [పొత్తికడుపు నొప్పి, పొత్తి కడుపులో నొప్పి]
+      hi: [पेड़ू में दर्द, पेडू दर्द]
+
+  - id: painful_urination
+    kind: symptom
+    rfv: [16500]
+    label: {en: Painful or burning urination, te: మూత్రంలో మంట, hi: पेशाब में जलन}
+    terms:
+      en: [painful urination, burning urination, burning when i pee, pain when peeing, burning when urinating, dysuria]
+      te: [మూత్రంలో మంట, మూత్రం పోసేటప్పుడు మంట, మూత్ర విసర్జనలో నొప్పి]
+      hi: [पेशाब में जलन, पेशाब करते समय दर्द, पेशाब में दर्द]
+
+  # ===================== RESPIRATORY =====================
+  - id: cough
+    kind: symptom
+    rfv: [14400]
+    label: {en: Cough, te: దగ్గు, hi: खांसी}
+    terms:
+      en: [cough, coughing, dry cough, wet cough]
+      te: [దగ్గు, పొడి దగ్గు]
+      hi: [खांसी, खाँसी, सूखी खांसी]
+
+  - id: shortness_of_breath
+    kind: symptom
+    rfv: [14150, 14200, 14300, 14302]
+    label: {en: Shortness of breath, te: ఆయాసం / ఊపిరి ఆడకపోవడం, hi: सांस फूलना}
+    terms:
+      en: [shortness of breath, short of breath, breathless, breathlessness, difficulty breathing, hard to breathe, trouble breathing, breathing difficulty, out of breath]
+      te: [ఆయాసం, ఊపిరి ఆడటం కష్టంగా, శ్వాస తీసుకోవడం కష్టం, ఊపిరి తీసుకోవడం కష్టం]
+      hi: [सांस फूलना, सांस फूल रही, साँस फूलना, सांस लेने में तकलीफ, सांस लेने में दिक्कत, सांस लेने में परेशानी, सांस फूल, सांस फूलती, सांस फूलता]
+
+  - id: wheezing
+    kind: symptom
+    rfv: [14250]
+    label: {en: Wheezing, te: పిల్లికూతలు, hi: सांस में घरघराहट}
+    terms:
+      en: [wheezing, wheeze, wheezy, whistling breath]
+      te: [పిల్లికూతలు, ఊపిరిలో గురక]
+      hi: [घरघराहट, सांस में सीटी]
+
+  - id: nasal_congestion
+    kind: symptom
+    rfv: [14000, 14450, 14103, 14350]
+    label: {en: Blocked or runny nose, te: జలుబు / ముక్కు దిబ్బడ, hi: जुकाम / बंद नाक}
+    terms:
+      en: [runny nose, blocked nose, stuffy nose, nasal congestion, common cold, a cold, head cold, sneezing]
+      te: [జలుబు, ముక్కు దిబ్బడ, ముక్కు కారడం, తుమ్ములు]
+      hi: [जुकाम, सर्दी जुकाम, बहती नाक, नाक बंद, छींक]
+
+  - id: coughing_blood
+    kind: symptom
+    rfv: [14701]
+    label: {en: Coughing up blood, te: దగ్గులో రక్తం, hi: खांसी में खून}
+    terms:
+      en: [coughing up blood, coughing blood, blood in my cough, blood in sputum, haemoptysis, hemoptysis]
+      te: [దగ్గులో రక్తం, దగ్గినప్పుడు రక్తం]
+      hi: [खांसी में खून, खाँसी में खून, बलगम में खून]
+
+  # ===================== DIGESTIVE =====================
+  - id: nausea
+    kind: symptom
+    rfv: [15250]
+    label: {en: Nausea, te: వికారం, hi: जी मिचलाना}
+    terms:
+      en: [nausea, nauseous, nauseated, feel sick, feeling sick, queasy, feel like vomiting]
+      te: [వికారం, వాంతి వచ్చేలా ఉంది, వాంతి వచ్చినట్టు]
+      hi: [जी मिचलाना, जी मिचला, मतली, उबकाई]
+
+  - id: vomiting
+    kind: symptom
+    rfv: [15300]
+    label: {en: Vomiting, te: వాంతులు, hi: उल्टी}
+    terms:
+      en: [vomiting, vomit, vomited, throwing up, threw up, being sick]
+      te: [వాంతులు, వాంతి, వాంతి అయింది]
+      hi: [उल्टी, उल्टियाँ, उल्टियां, उल्टी हो रही]
+
+  - id: vomiting_blood
+    kind: symptom
+    rfv: [15802]
+    label: {en: Vomiting blood, te: రక్తం వాంతి, hi: खून की उल्टी}
+    terms:
+      en: [vomiting blood, vomited blood, blood in my vomit, blood in vomit, coffee ground vomit, haematemesis, hematemesis]
+      te: [రక్తం వాంతి, రక్తపు వాంతులు, వాంతిలో రక్తం]
+      hi: [खून की उल्टी, उल्टी में खून]
+
+  - id: diarrhoea
+    kind: symptom
+    rfv: [15950]
+    label: {en: Diarrhoea, te: విరేచనాలు, hi: दस्त}
+    terms:
+      en: [diarrhea, diarrhoea, loose motions, loose stools, watery stools, runny stools]
+      te: [విరేచనాలు, నీళ్ల విరేచనాలు, లూజ్ మోషన్స్]
+      hi: [दस्त, पतले दस्त, लूज मोशन, लूज़ मोशन]
+
+  - id: constipation
+    kind: symptom
+    rfv: [15900]
+    label: {en: Constipation, te: మలబద్ధకం, hi: कब्ज}
+    terms:
+      en: [constipation, constipated]
+      te: [మలబద్ధకం]
+      hi: [कब्ज, क़ब्ज़]
+
+  - id: blood_in_stool
+    kind: symptom
+    rfv: [15801, 16052]
+    label: {en: Blood in stool / rectal bleeding, te: మలంలో రక్తం, hi: मल में खून}
+    terms:
+      en: [blood in stool, blood in my stool, bloody stool, black stool, black tarry stool, rectal bleeding, bleeding from my bottom, blood in poo]
+      te: [మలంలో రక్తం, నల్లటి మలం, మల ద్వారంలో రక్తస్రావం]
+      hi: [मल में खून, पखाने में खून, काला मल, शौच में खून]
+
+  - id: difficulty_swallowing
+    kind: symptom
+    rfv: [15200]
+    label: {en: Difficulty swallowing, te: మింగడం కష్టం, hi: निगलने में कठिनाई}
+    terms:
+      en: [difficulty swallowing, trouble swallowing, hard to swallow, can't swallow, cannot swallow, painful swallowing]
+      te: [మింగడం కష్టంగా, మింగలేకపోతున్నాను]
+      hi: [निगलने में कठिनाई, निगलने में तकलीफ, निगल नहीं पा]
+
+  # ===================== NEUROLOGICAL =====================
+  - id: dizziness
+    kind: symptom
+    rfv: [12250]
+    label: {en: Dizziness, te: తల తిరగడం, hi: चक्कर}
+    terms:
+      en: [dizzy, dizziness, giddy, giddiness, vertigo, lightheaded, light headed, light-headed, room spinning, spinning sensation]
+      te: [తల తిరుగుతోంది, తల తిరగడం, కళ్ళు తిరుగుతున్నాయి, కళ్ళు తిరగడం]
+      hi: [चक्कर, चक्कर आना, चक्कर आ रहे, सिर घूम रहा, सिर घूमना]
+
+  - id: seizure
+    kind: symptom
+    rfv: [12050]
+    label: {en: Seizure (fit), te: ఫిట్స్ / మూర్ఛ, hi: दौरा}
+    terms:
+      en: [seizure, seizures, had a fit, having a fit, fits, convulsion, convulsions, convulsing, fitting]
+      te: [ఫిట్స్, మూర్ఛ, మూర్ఛ వచ్చింది, ఫిట్స్ వచ్చాయి]
+      hi: [दौरा, दौरे, मिर्गी का दौरा, झटके आना, झटके आ रहे]
+
+  - id: numbness
+    kind: symptom
+    rfv: [12201, 12203, 12204]
+    label: {en: Numbness or tingling, te: తిమ్మిరి, hi: सुन्नपन / झुनझुनी}
+    terms:
+      en: [numbness, numb, tingling, pins and needles, loss of feeling, loss of sensation]
+      te: [తిమ్మిరి, తిమ్మిర్లు, స్పర్శ లేదు]
+      hi: [सुन्नपन, सुन्न, झुनझुनी]
+
+  - id: focal_weakness
+    kind: symptom
+    rfv: [12300, 19204]
+    label: {en: Weakness on one side or in an arm/leg, te: ఒక వైపు బలహీనత, hi: एक तरफ कमजोरी}
+    terms:
+      en: [weakness on one side, one side weakness, one-sided weakness, can't move my arm, cannot move my arm, can't move my leg, cannot move my leg, arm weakness, leg weakness, weak arm, weak leg, paralysis, paralysed, paralyzed, can't lift my arm]
+      te: [ఒక వైపు బలహీనత, చేయి కదలడం లేదు, కాలు కదలడం లేదు, పక్షవాతం, చేయి కాలు పడిపోయాయి]
+      hi: [एक तरफ कमजोरी, एक तरफ कमज़ोरी, हाथ नहीं हिल, पैर नहीं हिल, लकवा, हाथ पैर में कमजोरी]
+
+  - id: speech_difficulty
+    kind: symptom
+    rfv: [12350, 12352]
+    label: {en: Difficulty speaking, te: మాట్లాడటం కష్టం, hi: बोलने में कठिनाई}
+    terms:
+      en: [slurred speech, slurring, difficulty speaking, trouble speaking, can't speak properly, cannot speak properly, trouble talking, words coming out wrong, can't find words, speech is slurred, slurring my words, can't talk properly, cannot talk properly]
+      te: [మాట తడబడుతోంది, మాట ముద్దగా, మాట్లాడలేకపోతున్నాను, మాట రావడం లేదు]
+      hi: [बोलने में कठिनाई, बोलने में दिक्कत, ज़ुबान लड़खड़ा, जुबान लड़खड़ा, बोली साफ नहीं]
+
+  - id: confusion
+    kind: symptom
+    rfv: [12150]
+    label: {en: Confusion, te: అయోమయం, hi: भ्रम / उलझन}
+    terms:
+      en: [confused, confusion, disoriented, disorientated, not making sense, drowsy and confused]
+      te: [అయోమయం, గందరగోళంగా, ఏమీ అర్థం కావడం లేదు]
+      hi: [भ्रम, उलझन, होश ठिकाने नहीं, कुछ समझ नहीं आ रहा]
+
+  - id: vision_problem
+    kind: symptom
+    rfv: [13050, 13052]
+    label: {en: Vision problems, te: చూపు సమస్య, hi: दृष्टि समस्या}
+    terms:
+      en: [blurred vision, blurry vision, loss of vision, lost my vision, can't see, cannot see, double vision, vision loss, sudden blindness]
+      te: [చూపు మసకబారింది, చూపు మసకగా, కనిపించడం లేదు, రెండుగా కనిపిస్తోంది]
+      hi: [धुंधला दिख, दिखाई नहीं दे, दो दो दिख, नज़र कमज़ोर, आँखों के आगे अंधेरा]
+
+  - id: unconsciousness
+    kind: symptom
+    rfv: [58400]
+    label: {en: Unconscious / not responding, te: స్పృహలో లేరు, hi: बेहोश / प्रतिक्रिया नहीं}
+    terms:
+      en: [unconscious, unresponsive, not responding, won't wake up, can't wake, cannot be woken, not waking up, not breathing]
+      te: [స్పృహలో లేరు, స్పృహ రావడం లేదు, లేవడం లేదు, ఊపిరి తీసుకోవడం లేదు]
+      hi: [बेहोश है, होश नहीं आ रहा, जाग नहीं रहा, जाग नहीं रही, सांस नहीं ले रहा]
+
+  # ===================== HEART =====================
+  - id: palpitations
+    kind: symptom
+    rfv: [12600, 12601, 12603]
+    label: {en: Palpitations, te: గుండె దడ, hi: दिल की धड़कन तेज़}
+    terms:
+      en: [palpitations, heart racing, racing heart, heart pounding, pounding heart, fast heartbeat, irregular heartbeat, heart fluttering, heart is racing, heart is pounding, heart beating fast, heart is beating fast]
+      te: [గుండె దడ, గుండె వేగంగా కొట్టుకుంటోంది, గుండె దడదడ]
+      hi: [दिल की धड़कन तेज, दिल की धड़कन तेज़, धड़कन तेज, धड़कन बढ़]
+
+  # ===================== SKIN / ALLERGY =====================
+  - id: rash
+    kind: symptom
+    rfv: [18600, 18650]
+    label: {en: Rash, te: దద్దుర్లు, hi: चकत्ते / दाने}
+    terms:
+      en: [rash, skin rash, red spots, hives, spots on my skin, welts]
+      te: [దద్దుర్లు, చర్మంపై దద్దుర్లు, ఎర్రటి మచ్చలు]
+      hi: [चकत्ते, दाने, त्वचा पर दाने, पित्ती, लाल दाने]
+
+  - id: itching
+    kind: symptom
+    rfv: [18702]
+    label: {en: Itching, te: దురద, hi: खुजली}
+    terms:
+      en: [itching, itchy, itch]
+      te: [దురద, దురదగా]
+      hi: [खुजली]
+
+  - id: allergic_reaction
+    kind: symptom
+    rfv: [10900]
+    label: {en: Allergic reaction, te: అలర్జీ, hi: एलर्जी}
+    terms:
+      en: [allergic reaction, allergy, allergic]
+      te: [అలర్జీ, అలెర్జీ]
+      hi: [एलर्जी]
+
+  - id: face_throat_swelling
+    kind: symptom
+    rfv: [14555, 13353]
+    label: {en: "Swelling of face, lips, tongue or throat", te: ముఖం / పెదవులు / గొంతు వాపు, hi: चेहरे / होंठ / गले में सूजन}
+    terms:
+      en: [swollen face, face swelling, swollen lips, lips swelling, swollen tongue, tongue swelling, throat swelling, swollen throat, throat closing, throat feels tight, swollen eyes, throat is swollen, lips are swollen, face is swollen, tongue is swollen, lips swollen, face swollen, tongue swollen, tongue is swelling, lips are swelling, face is swelling, throat is swelling, tongue swelling up, lips swelling up]
+      te: [ముఖం వాపు, పెదవులు వాచాయి, పెదవుల వాపు, నాలుక వాపు, గొంతు వాపు, గొంతు బిగుసుకుపోతోంది]
+      hi: [चेहरे पर सूजन, होंठ सूज, होंठों में सूजन, जीभ में सूजन, जीभ सूज, गले में सूजन, गला बंद हो रहा]
+
+  # ===================== BLEEDING / URINARY / WOMEN'S HEALTH =====================
+  - id: bleeding
+    kind: symptom
+    rfv: [10700]
+    label: {en: Bleeding, te: రక్తస్రావం, hi: खून बहना}
+    terms:
+      en: [bleeding, bleed, blood loss]
+      te: [రక్తస్రావం, రక్తం కారుతోంది]
+      hi: [खून बह, रक्तस्राव, खून निकल, खून आ रहा, खून आ रही, खून जा रहा]
+
+  - id: nosebleed
+    kind: symptom
+    rfv: [14051]
+    label: {en: Nosebleed, te: ముక్కు నుండి రక్తం, hi: नकसीर}
+    terms:
+      en: [nosebleed, nose bleed, nose bleeding, bleeding from my nose, epistaxis]
+      te: [ముక్కు నుండి రక్తం, ముక్కులో నుండి రక్తం]
+      hi: [नकसीर, नाक से खून]
+
+  - id: vaginal_bleeding
+    kind: symptom
+    rfv: [17550, 17902]
+    label: {en: Vaginal bleeding, te: యోని రక్తస్రావం, hi: योनि से रक्तस्राव}
+    terms:
+      en: [vaginal bleeding, bleeding from my vagina, spotting, heavy period, heavy periods]
+      te: [యోని రక్తస్రావం, ఎక్కువ రుతుస్రావం]
+      hi: [योनि से खून, योनि से रक्तस्राव, ज्यादा माहवारी, भारी पीरियड]
+
+  - id: blood_in_urine
+    kind: symptom
+    rfv: [16401]
+    label: {en: Blood in urine, te: మూత్రంలో రక్తం, hi: पेशाब में खून}
+    terms:
+      en: [blood in urine, blood in my urine, blood in pee, red urine, haematuria, hematuria]
+      te: [మూత్రంలో రక్తం]
+      hi: [पेशाब में खून]
+
+  - id: urinary_frequency
+    kind: symptom
+    rfv: [16450]
+    label: {en: Frequent urination, te: తరచుగా మూత్రం, hi: बार-बार पेशाब}
+    terms:
+      en: [frequent urination, peeing a lot, urinating frequently, urgency to urinate, go frequently, pee frequently, urinate frequently, peeing often, pee often, need to pee often]
+      te: [తరచుగా మూత్రం, మాటిమాటికి మూత్రం]
+      hi: [बार बार पेशाब, बार-बार पेशाब]
+
+  - id: urinary_retention
+    kind: symptom
+    rfv: [16601]
+    label: {en: Unable to pass urine, te: మూత్రం రావడం లేదు, hi: पेशाब नहीं हो रहा}
+    terms:
+      en: [can't pee, cannot pee, can't urinate, cannot urinate, unable to pass urine, unable to urinate, urine retention]
+      te: [మూత్రం రావడం లేదు, మూత్రం ఆగిపోయింది]
+      hi: [पेशाब नहीं हो रहा, पेशाब रुक गया, पेशाब नहीं आ रहा]
+
+  # ===================== MENTAL HEALTH =====================
+  - id: anxiety
+    kind: symptom
+    rfv: [11000]
+    label: {en: Anxiety, te: ఆందోళన, hi: चिंता / घबराहट}
+    terms:
+      en: [anxiety, anxious, panic, panic attack, nervous, nervousness]
+      te: [ఆందోళన, భయంగా ఉంది, కంగారు]
+      hi: [चिंता, घबराहट, बेचैनी, पैनिक]
+
+  - id: low_mood
+    kind: symptom
+    rfv: [11100]
+    label: {en: Low mood / depression, te: నిరాశ / డిప్రెషన్, hi: उदासी / अवसाद}
+    terms:
+      en: [depressed, depression, low mood, feeling down, hopeless]
+      te: [నిరాశ, డిప్రెషన్, దిగులు]
+      hi: [उदासी, अवसाद, डिप्रेशन, निराशा]
+
+  - id: hallucinations
+    kind: symptom
+    rfv: [11550]
+    label: {en: Seeing or hearing things, te: భ్రాంతులు, hi: भ्रम / आवाज़ें सुनना}
+    terms:
+      en: [hallucinations, hallucinating, hearing voices, seeing things]
+      te: [భ్రాంతులు, గొంతులు వినిపిస్తున్నాయి]
+      hi: [आवाज़ें सुनाई, आवाजें सुनाई, मतिभ्रम]
+
+  # ===================== INJURY =====================
+  - id: injury
+    kind: symptom
+    rfv: [58100, 58050, 55700]
+    label: {en: Injury or accident, te: గాయం / ప్రమాదం, hi: चोट / दुर्घटना}
+    terms:
+      en: [injury, injured, accident, fell down, had a fall, fell, road accident, car accident, bike accident, sprain, sprained]
+      te: [గాయం, దెబ్బ తగిలింది, ప్రమాదం, కింద పడ్డాను, యాక్సిడెంట్]
+      hi: [चोट, चोट लगी, दुर्घटना, एक्सीडेंट, गिर गया, गिर गई]
+
+  - id: head_injury
+    kind: symptom
+    rfv: [55050]
+    label: {en: Head injury, te: తలకు దెబ్బ, hi: सिर में चोट}
+    terms:
+      en: [head injury, hit my head, banged my head, head trauma, knocked my head, bumped my head]
+      te: [తలకు దెబ్బ, తలకు గాయం, తల కొట్టుకుంది]
+      hi: [सिर में चोट, सिर पर चोट]
+
+  # ===================== WARNING SIGNS (rules only) =====================
+  - id: radiating_pain
+    kind: sign
+    label: {en: "Pain spreading to arm, jaw, neck or back", te: నొప్పి చేయి / దవడకు పాకడం, hi: दर्द हाथ / जबड़े तक फैलना}
+    terms:
+      en: [spreading to my arm, spreads to my arm, spreading to my left arm, spreading to my jaw, spreads to my jaw, radiating to my arm, radiating to my jaw, radiating, going down my arm, left arm pain, pain in my left arm, jaw pain, down my left arm, down my arm, to my left arm, into my arm, into my jaw, to my jaw]
+      te: [చేతికి పాకుతోంది, ఎడమ చేతికి పాకుతోంది, దవడకు పాకుతోంది, ఎడమ చేయి నొప్పి, దవడ నొప్పి]
+      hi: [हाथ तक फैल, बाएं हाथ तक, बाएं हाथ में दर्द, जबड़े तक फैल, जबड़े में दर्द]
+
+  - id: severe_breathing_distress
+    kind: sign
+    implies: [shortness_of_breath]   # recording the sign also records this model symptom
+    label: {en: Severe difficulty breathing, te: తీవ్రమైన శ్వాస ఇబ్బంది, hi: सांस लेने में गंभीर तकलीफ}
+    terms:
+      en: [gasping, gasping for air, choking, can't breathe, cannot breathe, unable to breathe, struggling to breathe, can't get my words out, can't speak in full sentences, can't catch my breath]
+      te: [ఊపిరి అందడం లేదు, శ్వాస అందడం లేదు, ఉక్కిరిబిక్కిరి, ఊపిరి ఆగిపోతోంది, ఊపిరి ఆడటం లేదు, ఊపిరి ఆడట్లేదు]
+      hi: [सांस नहीं आ रही, सांस नहीं ले पा रहा, सांस नहीं ले पा रही, दम घुट रहा, साँस नहीं आ रही]
+
+  - id: cyanosis
+    kind: sign
+    label: {en: "Blue, grey or very pale lips/skin", te: పెదవులు / చర్మం నీలంగా మారడం, hi: होंठ / त्वचा नीली पड़ना}
+    terms:
+      en: [blue lips, lips turning blue, lips are blue, lips turned blue, grey lips, turning blue, skin turning blue, blue skin]
+      te: [పెదవులు నీలంగా, పెదాలు నీలంగా, చర్మం నీలంగా]
+      hi: [होंठ नीले, होंठ नीले पड़, त्वचा नीली]
+
+  - id: face_droop
+    kind: sign
+    label: {en: Face drooping on one side, te: ముఖం ఒక వైపు వాలిపోవడం, hi: चेहरा एक तरफ लटकना}
+    terms:
+      en: [face drooping, face droop, drooping face, face is drooping, one side of my face, mouth drooping, crooked smile, face looks droopy, face is droopy, droopy face, face drooped, mouth is drooping]
+      te: [ముఖం ఒక వైపు వాలిపోయింది, మూతి వంకర, ముఖం వంకర]
+      hi: [चेहरा एक तरफ लटक, मुंह टेढ़ा, मुँह टेढ़ा, चेहरा टेढ़ा]
+
+  - id: thunderclap_headache
+    kind: sign
+    implies: [headache]   # recording the sign also records this model symptom
+    label: {en: "Sudden, extremely severe headache", te: అకస్మాత్తుగా తీవ్రమైన తలనొప్పి, hi: अचानक बहुत तेज़ सिरदर्द}
+    terms:
+      en: [worst headache of my life, worst headache ever, thunderclap headache, sudden severe headache, sudden terrible headache]
+      te: [జీవితంలో ఎప్పుడూ లేనంత తలనొప్పి, అకస్మాత్తుగా తీవ్రమైన తలనొప్పి]
+      hi: [जिंदगी का सबसे बुरा सिरदर्द, अचानक बहुत तेज सिरदर्द, अचानक तेज़ सिरदर्द]
+
+  - id: non_blanching_rash
+    kind: sign
+    implies: [rash]   # recording the sign also records this model symptom
+    label: {en: Rash that does not fade when pressed, te: నొక్కినా పోని దద్దుర్లు, hi: दबाने पर न मिटने वाले दाने}
+    terms:
+      en: [rash does not fade, rash doesn't fade, rash that doesn't fade, rash not fading, glass test, purple spots, purple rash]
+      te: [నొక్కినా పోని దద్దుర్లు, నొక్కినా పోవడం లేదు, ఊదా రంగు మచ్చలు]
+      hi: [दबाने पर नहीं मिट, बैंगनी धब्बे, बैंगनी दाने]
+
+  - id: heavy_bleeding
+    kind: sign
+    implies: [bleeding]   # recording the sign also records this model symptom
+    label: {en: Heavy or uncontrolled bleeding, te: ఆగని / ఎక్కువ రక్తస్రావం, hi: न रुकने वाला / भारी रक्तस्राव}
+    terms:
+      en: [bleeding heavily, heavy bleeding, won't stop bleeding, bleeding won't stop, bleeding will not stop, losing a lot of blood, lot of blood, soaking a pad, uncontrolled bleeding]
+      te: [రక్తం ఆగడం లేదు, ఎక్కువగా రక్తస్రావం, చాలా రక్తం పోతోంది]
+      hi: [खून नहीं रुक रहा, खून रुक नहीं रहा, बहुत खून बह, भारी रक्तस्राव]
+
+  - id: suicidal_thoughts
+    kind: sign
+    label: {en: Thoughts of suicide or self-harm, te: ఆత్మహత్య / స్వీయ హాని ఆలోచనలు, hi: आत्महत्या / खुद को नुकसान के विचार}
+    terms:
+      en: [suicidal, suicide, kill myself, want to die, end my life, self harm, self-harm, harm myself, hurt myself on purpose, don't want to live, killing myself, suicidal thoughts, thoughts of suicide, take my own life, ending my life]
+      te: [ఆత్మహత్య, చనిపోవాలని ఉంది, నన్ను నేను చంపుకోవాలని, బ్రతకాలని లేదు]
+      hi: [आत्महत्या, मरना चाहता, मरना चाहती, खुद को मार, जान देना, जीना नहीं चाहता, जीना नहीं चाहती]
+
+  # ===================== CONTEXT =====================
+  - id: pregnant
+    kind: context
+    label: {en: Pregnant, te: గర్భవతి, hi: गर्भवती}
+    terms:
+      en: [pregnant, pregnancy, expecting a baby, weeks pregnant]
+      te: [గర్భవతి, గర్భంతో ఉన్నాను, గర్భం]
+      hi: [गर्भवती, प्रेग्नेंट, गर्भ से]

@@ -1,0 +1,48 @@
+# Experiment 2 - Hindi symptom extraction, DEVELOPMENT set.
+# SYNTHETIC, written by the project developer (not a native-speaker panel): software testing only.
+# PENDING native-speaker review of the sentences themselves.
+cases:
+  # ---------------- basic ----------------
+  - {id: HB01, cat: basic, text: "मुझे बुखार और सिरदर्द है।", present: [fever, headache]}
+  - {id: HB02, cat: basic, text: "दो दिन से बहुत तेज सिरदर्द है और चक्कर आ रहे हैं", present: [headache, dizziness],
+     attrs: {headache: {severity: severe, duration_days: 2}}}
+  - {id: HB03, cat: basic, text: "कल से उल्टी और दस्त हो रहे हैं", present: [vomiting, diarrhoea],
+     attrs: {vomiting: {duration_days: 1}, diarrhoea: {duration_days: 1}}}
+  - {id: HB04, cat: basic, text: "गले में खराश और जुकाम है", present: [sore_throat, nasal_congestion]}
+  - {id: HB05, cat: basic, text: "हाथ पर लाल दाने हैं और बहुत खुजली हो रही है", present: [rash, itching]}
+  - {id: HB06, cat: basic, text: "तीन हफ्ते से कमर दर्द है", present: [back_pain], attrs: {back_pain: {duration_days: 21}}}
+  - {id: HB07, cat: basic, text: "भूख नहीं लगती और बहुत थकान रहती है", present: [loss_of_appetite, fatigue]}
+  - {id: HB08, cat: basic, text: "पेशाब में जलन होती है", present: [painful_urination]}
+  # ---------------- negation ----------------
+  - {id: HN01, cat: negation, text: "मुझे सीने में दर्द नहीं है", present: [], negated: [chest_pain]}
+  - {id: HN02, cat: negation, text: "बुखार नहीं है, खांसी भी नहीं", present: [], negated: [fever, cough]}
+  - {id: HN03, cat: negation, text: "सिरदर्द है लेकिन बुखार नहीं है", present: [headache], negated: [fever]}
+  - {id: HN04, cat: negation, text: "न बुखार है न खांसी", present: [], negated: [fever, cough]}
+  - {id: HN05, cat: negation, text: "सांस नहीं ले पा रहा हूं", present: [severe_breathing_distress, shortness_of_breath]}
+  - {id: HN06, cat: negation, text: "बुखार ठीक हो गया पर खांसी अभी भी है", present: [cough], negated: [fever]}
+  - {id: HN07, cat: negation, text: "पेट दर्द कम नहीं हो रहा", present: [abdominal_pain], attrs: {abdominal_pain: {progression: worsening}}}
+  - {id: HN08, cat: negation, text: "सिरदर्द ज्यादा नहीं है, हल्का है", present: [headache], attrs: {headache: {severity: mild}}}
+  - {id: HN09, cat: negation, text: "मैं गर्भवती नहीं हूं", present: [], negated: [pregnant]}
+  - {id: HN10, cat: negation, text: "बिना बुखार के खांसी है", present: [cough], negated: [fever]}
+  # ---------------- spelling / script / code-mixing ----------------
+  - {id: HS01, cat: spelling, text: "मुझे बुख़ार है", present: [fever]}
+  - {id: HS02, cat: spelling, text: "उल्टियाँ हो रही हैं", present: [vomiting]}
+  - {id: HS03, cat: spelling, text: "मुझे fever और headache है", present: [fever, headache]}
+  - {id: HS04, cat: spelling, text: "मुझे cough नहीं है पर chest pain है", present: [chest_pain], negated: [cough]}
+  - {id: HS05, cat: spelling, text: "३ दिन से बुखार", present: [fever], attrs: {fever: {duration_days: 3}}}
+  # ---------------- structure ----------------
+  - {id: HT01, cat: structure, text: "पेट में अचानक दर्द शुरू हुआ और बढ़ रहा है", present: [abdominal_pain],
+     attrs: {abdominal_pain: {onset: sudden, progression: worsening}}}
+  - {id: HT02, cat: structure, text: "मेरे बेटे को बुखार है", present: [fever], subject: other}
+  - {id: HT03, cat: structure, text: "मेरी उम्र 60 साल है, सीने में दर्द हो रहा है", present: [chest_pain], age_years: 60}
+  - {id: HT04, cat: structure, text: "कभी कभी दिल की धड़कन तेज हो जाती है", present: [palpitations], attrs: {palpitations: {frequency: intermittent}}}
+  - {id: HT05, cat: structure, text: "2 दिनों से दस्त हो रहे हैं", present: [diarrhoea], attrs: {diarrhoea: {duration_days: 2}}}
+  - {id: HT06, cat: structure, text: "सुबह से चक्कर आ रहे हैं", present: [dizziness], attrs: {dizziness: {duration_days: 0.25}}}
+  - {id: HT07, cat: structure, text: "2 महीने के बच्चे को बुखार है", present: [fever], age_years: 0.1667, subject: other}
+  # ---------------- warning signs ----------------
+  - {id: HW01, cat: warning, text: "सीने में दर्द बाएं हाथ तक फैल रहा है और पसीना आ रहा है", present: [chest_pain, radiating_pain, sweating]}
+  - {id: HW02, cat: warning, text: "चेहरा एक तरफ लटक गया है और बोलने में दिक्कत है", present: [face_droop, speech_difficulty]}
+  - {id: HW03, cat: warning, text: "होंठ सूज गए हैं और सांस लेने में तकलीफ है", present: [face_throat_swelling, shortness_of_breath]}
+  - {id: HW04, cat: warning, text: "मैं मरना चाहता हूं", present: [suicidal_thoughts]}
+  - {id: HW05, cat: warning, text: "खून नहीं रुक रहा", present: [heavy_bleeding, bleeding]}
+  - {id: HW06, cat: warning, text: "मेरे पिताजी बेहोश हो गए", present: [fainting], subject: other}

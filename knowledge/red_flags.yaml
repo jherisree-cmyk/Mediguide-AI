@@ -1,0 +1,343 @@
+# MediGuide AI - red-flag safety rules
+# ------------------------------------------------------------------------------------
+# These rules are evaluated BEFORE and INDEPENDENTLY of the machine-learning model.
+#   level EMERGENCY -> show emergency guidance immediately, skip follow-up questions
+#   level URGENT    -> the final recommendation can never be lower than URGENT
+# The ML model may RAISE a rule level, never LOWER it.
+#
+# A rule fires if ANY of its clauses matches. A clause matches if ALL of its conditions hold:
+#   all:   [concept ids]   every listed concept is present and NOT negated
+#   any:   [concept ids]   at least one listed concept is present and NOT negated
+#   severity: severe       a concept in `all` (or `any`, if no `all`) is reported as severe
+#   onset: sudden          a concept in `all` (or `any`) started suddenly
+#   onset_not: gradual     onset is anything except an explicit "gradual" (unknown counts)
+#   min_duration_days: N   a concept in `all` (or `any`) has lasted >= N days
+#   context: [ids]         every listed context concept is present (e.g. pregnant)
+#   max_age_months: N      patient age (from profile or text) is <= N months
+#   (a clause with no all/any applies severity/onset/duration to ANY reported concept)
+#
+# Every rule lists `sources` (keys into the `sources` table below) and quotes the guideline
+# text it encodes. Where we are MORE conservative than the source, `note` says so.
+# Rules marked source `project_policy` are design choices without an external source.
+#
+# REVIEW STATUS: DRAFT, PENDING CLINICIAN REVIEW (see docs/clinical_review_log.md).
+# ------------------------------------------------------------------------------------
+version: 1
+status: draft-unreviewed
+
+sources:
+  nhs_chest_pain:     {title: "Chest pain", publisher: NHS, url: "https://www.nhs.uk/symptoms/chest-pain/", accessed: 2026-11-10}
+  nhs_sob:            {title: "Shortness of breath", publisher: NHS, url: "https://www.nhs.uk/symptoms/shortness-of-breath/", accessed: 2026-11-10}
+  nhs_stroke:         {title: "Stroke - symptoms", publisher: NHS, url: "https://www.nhs.uk/conditions/stroke/symptoms/", accessed: 2026-11-10}
+  nhs_sah:            {title: "Subarachnoid haemorrhage", publisher: NHS, url: "https://www.nhs.uk/conditions/subarachnoid-haemorrhage/", accessed: 2026-11-10}
+  nhs_headaches:      {title: "Headaches", publisher: NHS, url: "https://www.nhs.uk/symptoms/headaches/", accessed: 2026-11-10}
+  nhs_epilepsy:       {title: "Epilepsy", publisher: NHS, url: "https://www.nhs.uk/conditions/epilepsy/", accessed: 2026-11-10}
+  nhs_anaphylaxis:    {title: "Anaphylaxis", publisher: NHS, url: "https://www.nhs.uk/conditions/anaphylaxis/", accessed: 2026-11-10}
+  nhs_meningitis:     {title: "Meningitis", publisher: NHS, url: "https://www.nhs.uk/conditions/meningitis/", accessed: 2026-11-10}
+  nhs_sepsis:         {title: "Sepsis", publisher: NHS, url: "https://www.nhs.uk/conditions/sepsis/", accessed: 2026-11-10}
+  nhs_confusion:      {title: "Confusion", publisher: NHS, url: "https://www.nhs.uk/symptoms/confusion/", accessed: 2026-11-10}
+  nhs_head_injury:    {title: "Head injury and concussion", publisher: NHS, url: "https://www.nhs.uk/conditions/head-injury-and-concussion/", accessed: 2026-11-10}
+  nhs_fainting:       {title: "Fainting", publisher: NHS, url: "https://www.nhs.uk/conditions/fainting/", accessed: 2026-11-10}
+  nhs_stomach_ache:   {title: "Stomach ache", publisher: NHS, url: "https://www.nhs.uk/symptoms/stomach-ache/", accessed: 2026-11-10}
+  nhs_vomiting_blood: {title: "Vomiting blood", publisher: NHS, url: "https://www.nhs.uk/conditions/vomiting-blood/", accessed: 2026-11-10}
+  nhs_coughing_blood: {title: "Coughing up blood", publisher: NHS, url: "https://www.nhs.uk/conditions/coughing-up-blood/", accessed: 2026-11-10}
+  nhs_blood_in_urine: {title: "Blood in urine", publisher: NHS, url: "https://www.nhs.uk/conditions/blood-in-urine/", accessed: 2026-11-10}
+  nhs_preg_bleeding:  {title: "Vaginal bleeding in pregnancy", publisher: NHS, url: "https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/vaginal-bleeding/", accessed: 2026-11-10}
+  nhs_suicidal:       {title: "Help for suicidal thoughts", publisher: NHS, url: "https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/behaviours/help-for-suicidal-thoughts/", accessed: 2026-11-10}
+  nice_ng143:         {title: "Fever in under 5s: assessment and initial management (NG143)", publisher: NICE, url: "https://www.nice.org.uk/guidance/ng143", accessed: 2026-11-10}
+  medlineplus_emerg:  {title: "Recognizing medical emergencies", publisher: "MedlinePlus (US NLM)", url: "https://medlineplus.gov/ency/article/001927.htm", accessed: 2026-11-10}
+  who_etat:           {title: "Paediatric emergency triage, assessment and treatment (ETAT)", publisher: WHO, url: "https://www.who.int/publications/i/item/9789241510219", accessed: 2026-11-10}
+  telemanas:          {title: "Tele-MANAS national mental health helpline (14416 / 1-800-891-4416)", publisher: "MoHFW, Government of India", url: "https://telemanas.mohfw.gov.in/", accessed: 2026-11-10}
+  project_policy:     {title: "MediGuide conservative design policy (no external source)", publisher: "MediGuide project", url: "", accessed: 2026-11-10}
+
+rules:
+
+  # =============================== EMERGENCY ===============================
+  - id: EM_BREATHING
+    level: EMERGENCY
+    title: Severe difficulty breathing
+    match:
+      - any: [severe_breathing_distress, cyanosis]
+      - all: [shortness_of_breath]
+        severity: severe
+      - all: [shortness_of_breath]
+        any: [chest_tightness, chest_pain, confusion]
+    sources: [nhs_sob, who_etat]
+    quote: "Call 999 or go to A&E immediately if: you have severe difficulty breathing - you're gasping, choking or not able to get words out; your chest feels tight or heavy; your lips or skin are turning very pale, blue or grey; you feel suddenly confused."
+
+  - id: EM_CHEST_PAIN
+    level: EMERGENCY
+    title: Chest pain with heart-attack warning features
+    match:
+      - any: [chest_pain, chest_tightness]
+        onset: sudden
+      - any: [chest_pain, chest_tightness]
+        severity: severe
+      - all: [chest_pain]
+        any: [radiating_pain, sweating, nausea, vomiting, dizziness, fainting, shortness_of_breath]
+      - all: [chest_tightness]
+        any: [radiating_pain, sweating, nausea, vomiting, dizziness, fainting, shortness_of_breath]
+    sources: [nhs_chest_pain]
+    quote: "Call 999 if: you get sudden pain or discomfort in your chest that does not go away; you get pain that spreads to your left or right arm, or your neck, jaw, stomach or back; you have chest pain and you feel sweaty, sick, light headed or short of breath."
+    note: "Severe chest pain without sudden onset is also treated as an emergency (more conservative than the source)."
+
+  - id: EM_STROKE
+    level: EMERGENCY
+    title: Possible stroke warning signs (FAST)
+    match:
+      - any: [face_droop, focal_weakness, speech_difficulty]
+      - all: [numbness]
+        onset: sudden
+      - all: [vision_problem]
+        onset: sudden
+    sources: [nhs_stroke]
+    quote: "FAST: face, arms, speech and time to call 999. Other symptoms: weakness or numbness down 1 side of your body; blurred vision or loss of sight; finding it difficult to speak. Call 999 now if you've had signs of a stroke within the last 24 hours even if they've now stopped."
+
+  - id: EM_THUNDERCLAP_HEADACHE
+    level: EMERGENCY
+    title: Sudden, extremely severe headache or headache with danger signs
+    match:
+      - any: [thunderclap_headache]
+      - all: [headache]
+        onset: sudden
+        severity: severe
+      - all: [headache]
+        any: [seizure, numbness, focal_weakness, speech_difficulty, confusion, vision_problem, head_injury, neck_stiffness, non_blanching_rash]
+    sources: [nhs_sah, nhs_headaches]
+    quote: "Call 999 or go to A&E if [the headache]: started suddenly and is extremely painful; has had a seizure; has numbness or weakness; has had a head injury within the last 3 months; difficulty speaking; drowsy or confused; loss of vision; a rash that does not fade; a very high temperature, a stiff neck."
+
+  - id: EM_UNCONSCIOUS
+    level: EMERGENCY
+    title: Unconscious, not responding or not breathing
+    match:
+      - any: [unconsciousness]
+      - all: [fainting]
+        any: [chest_pain, chest_tightness, palpitations, seizure, speech_difficulty, focal_weakness, head_injury, injury]
+    sources: [nhs_fainting, medlineplus_emerg]
+    quote: "Call 999 if someone: is not breathing; cannot be woken up within 1 minute; has difficulty with speech or movement; has chest pain or a pounding, fluttering or irregular heartbeat; has seriously hurt themselves before or after fainting; is shaking or jerking."
+
+  - id: EM_SEIZURE
+    level: EMERGENCY
+    title: Seizure (fit)
+    match:
+      - any: [seizure]
+    sources: [nhs_epilepsy, who_etat]
+    quote: "Call 999 if: it's the first time it's happened; it lasts longer than 5 minutes; they do not recover as usual afterwards; they've had 3 or more seizures in 24 hours."
+    note: "The app cannot reliably check these conditions, so ANY reported seizure is treated as an emergency (more conservative than the source)."
+
+  - id: EM_ANAPHYLAXIS
+    level: EMERGENCY
+    title: Possible severe allergic reaction (anaphylaxis)
+    match:
+      - any: [face_throat_swelling]
+      - any: [allergic_reaction, rash, itching]
+        all: [shortness_of_breath]
+      - any: [allergic_reaction, rash, itching]
+        all: [wheezing]
+      - any: [allergic_reaction, rash, itching]
+        all: [difficulty_swallowing]
+      - any: [allergic_reaction, rash, itching]
+        all: [severe_breathing_distress]
+    sources: [nhs_anaphylaxis]
+    quote: "Call 999 if: your lips, mouth, throat or tongue suddenly become swollen; you're breathing very fast or struggling to breathe; your throat feels tight or you're struggling to swallow; your skin, tongue or lips turn blue, grey or pale; you suddenly become very confused, drowsy or dizzy."
+
+  - id: EM_MENINGITIS_SEPSIS
+    level: EMERGENCY
+    title: Possible meningitis or sepsis warning signs
+    match:
+      - any: [non_blanching_rash]
+      - all: [fever, neck_stiffness]
+      - all: [fever, confusion]
+      - all: [fever, rash]
+        any: [headache, neck_stiffness, confusion, vomiting]
+    sources: [nhs_meningitis, nhs_sepsis]
+    quote: "Call 999 or go to A&E if [someone]: has a very high or very low temperature; has a very painful headache; is confused, has slurred speech; has a stiff neck and cannot look at bright lights; has a rash that does not fade when you press it; has a seizure for the first time."
+
+  - id: EM_SUDDEN_CONFUSION
+    level: EMERGENCY
+    title: Sudden confusion
+    match:
+      - all: [confusion]
+        onset_not: gradual
+    sources: [nhs_confusion]
+    quote: "Go to A&E or call 999 if someone suddenly becomes confused."
+    note: "Confusion with unknown onset is treated as sudden (more conservative than the source)."
+
+  - id: EM_HEAD_INJURY
+    level: EMERGENCY
+    title: Head injury with danger signs
+    match:
+      - all: [head_injury]
+        any: [unconsciousness, fainting, seizure, vision_problem, numbness, focal_weakness, confusion, vomiting, heavy_bleeding, speech_difficulty]
+    sources: [nhs_head_injury]
+    quote: "Call 999 if [after a head injury someone]: has been knocked out and has not woken up; cannot stay awake; has a fit; has problems with their vision or hearing; is bleeding from their ears; has new numbness or weakness in any part of their body."
+    note: "Vomiting after a head injury is in the NHS 'go to A&E' list; we treat it as an emergency."
+
+  - id: EM_GI_BLEED_OR_ACUTE_ABDOMEN
+    level: EMERGENCY
+    title: Vomiting blood, heavy bleeding from the bottom, or sudden severe stomach pain
+    match:
+      - any: [vomiting_blood]
+      - all: [blood_in_stool, heavy_bleeding]
+      - all: [abdominal_pain]
+        onset: sudden
+        severity: severe
+      - all: [abdominal_pain, urinary_retention]
+      - all: [abdominal_pain]
+        any: [severe_breathing_distress, non_blanching_rash, blood_in_stool]
+    sources: [nhs_stomach_ache, nhs_vomiting_blood]
+    quote: "Call 999 or go to A&E now if: it started suddenly and is severe; you're vomiting blood or your vomit looks green or like ground coffee; there is a lot of blood coming from your bottom or your poo is black and sticky; you cannot pee at all; a rash that does not fade; you're struggling to breathe."
+    note: "Any blood in stool together with stomach pain is treated as an emergency (more conservative than the source)."
+
+  - id: EM_COUGHING_BLOOD
+    level: EMERGENCY
+    title: Coughing up blood with danger signs
+    match:
+      - all: [coughing_blood]
+        any: [heavy_bleeding, shortness_of_breath, severe_breathing_distress, palpitations, chest_pain, back_pain]
+      - all: [coughing_blood]
+        severity: severe
+    sources: [nhs_coughing_blood]
+    quote: "Call 999 or go to A&E immediately if: you're coughing up more than just a few spots or streaks of blood; you're coughing up blood and finding it hard to breathe, have a very fast heartbeat or have pain in your chest or upper back."
+
+  - id: EM_HEAVY_BLEEDING
+    level: EMERGENCY
+    title: Heavy or uncontrolled bleeding
+    match:
+      - any: [heavy_bleeding]
+    sources: [medlineplus_emerg]
+    quote: "Warning signs of a medical emergency include: bleeding that will not stop."
+
+  - id: EM_PREGNANCY
+    level: EMERGENCY
+    title: Pregnancy with bleeding or severe pain and danger signs
+    match:
+      - context: [pregnant]
+        all: [vaginal_bleeding]
+        any: [heavy_bleeding, fainting, dizziness, unconsciousness, nausea]
+      - context: [pregnant]
+        all: [abdominal_pain]
+        severity: severe
+      - context: [pregnant]
+        all: [pelvic_pain]
+        severity: severe
+    sources: [nhs_preg_bleeding]
+    quote: "Call 999 if: you have severe pain in your tummy; you have pain in your shoulder; you feel sick, faint, dizzy or lose consciousness; the bleeding is heavy (soaking a period pad soon after putting it on)."
+
+  - id: EM_INFANT_FEVER
+    level: EMERGENCY
+    title: Fever in a baby under 3 months
+    match:
+      - all: [fever]
+        max_age_months: 3
+    sources: [nhs_meningitis, nhs_sepsis, nice_ng143]
+    quote: "Call 999 or go to A&E if [a baby] has a very high temperature - 38C or more in babies under 3 months old."
+    note: "We cannot measure temperature, so any reported fever in a baby under 3 months is treated as an emergency."
+
+  - id: EM_SUICIDE_RISK
+    level: EMERGENCY
+    title: Thoughts of suicide or self-harm
+    match:
+      - any: [suicidal_thoughts]
+    sources: [nhs_suicidal, telemanas]
+    quote: "If you feel you may act on suicidal thoughts, call 999 or go to A&E. India: Tele-MANAS 24/7 mental health helpline 14416 or 1-800-891-4416."
+
+  # ================================ URGENT FLOOR ================================
+  - id: UR_CHEST_SYMPTOMS
+    level: URGENT
+    title: Chest pain or tightness
+    match:
+      - any: [chest_pain, chest_tightness]
+    sources: [nhs_chest_pain]
+    quote: "Get an urgent GP appointment or get help from NHS 111 if: you have chest pain that comes and goes; you have chest pain that goes away quickly but you're still worried."
+
+  - id: UR_BREATHLESSNESS
+    level: URGENT
+    title: Shortness of breath or wheezing
+    match:
+      - any: [shortness_of_breath, wheezing]
+    sources: [nhs_sob]
+    quote: "Shortness of breath that is not severe still needs prompt medical assessment (NHS: ask for an urgent GP appointment or get help from NHS 111)."
+
+  - id: UR_FAINTING
+    level: URGENT
+    title: Fainting
+    match:
+      - any: [fainting]
+    sources: [nhs_fainting]
+    quote: "See a GP if you have fainted and you do not know why, or you keep fainting."
+    note: "We raise this to URGENT because the app cannot rule out the 999 criteria."
+
+  - id: UR_BLEEDING
+    level: URGENT
+    title: Unexplained bleeding
+    match:
+      - any: [coughing_blood, blood_in_stool, blood_in_urine, vaginal_bleeding, bleeding]
+    sources: [nhs_coughing_blood, nhs_blood_in_urine, nhs_preg_bleeding]
+    quote: "Coughing up small amounts of blood, blood in urine, or bleeding in pregnancy should be checked promptly by a doctor."
+
+  - id: UR_NEURO
+    level: URGENT
+    title: New neurological symptoms
+    match:
+      - any: [numbness, vision_problem, confusion, head_injury]
+    sources: [nhs_stroke, nhs_head_injury, nhs_confusion]
+    quote: "New numbness, vision change, confusion or a head injury needs prompt assessment; sudden onset is an emergency."
+
+  - id: UR_URINARY_RETENTION
+    level: URGENT
+    title: Unable to pass urine
+    match:
+      - any: [urinary_retention]
+    sources: [nhs_stomach_ache]
+    quote: "Call 999 or go to A&E now if you cannot pee at all (with stomach pain)."
+    note: "Without stomach pain, treated as URGENT (needs same-day assessment)."
+
+  - id: UR_PREGNANCY
+    level: URGENT
+    title: Pregnancy with pain or bleeding
+    match:
+      - context: [pregnant]
+        any: [vaginal_bleeding, abdominal_pain, pelvic_pain, headache, vision_problem, swelling]
+    sources: [nhs_preg_bleeding]
+    quote: "Contact your midwife or GP urgently if you have any vaginal bleeding in pregnancy."
+
+  - id: UR_PROLONGED_FEVER
+    level: URGENT
+    title: Fever lasting 5 days or more
+    match:
+      - all: [fever]
+        min_duration_days: 5
+    sources: [nice_ng143]
+    quote: "NICE NG143 lists fever for 5 days or longer as an amber ('intermediate risk') feature in children under 5."
+    note: "Applied to all ages by project policy."
+
+  - id: UR_YOUNG_INFANT
+    level: URGENT
+    title: Any symptom in a baby under 3 months
+    match:
+      - max_age_months: 3
+    sources: [project_policy]
+    quote: "Young infants can deteriorate quickly; any symptom is routed to prompt medical assessment."
+
+  - id: UR_SEVERE_SYMPTOM
+    level: URGENT
+    title: Any symptom described as severe
+    match:
+      - severity: severe
+    sources: [project_policy]
+    quote: "Any symptom the user describes as severe is routed to at least prompt medical assessment."
+
+  - id: UR_MENTAL_HEALTH_CRISIS
+    level: URGENT
+    title: Hallucinations
+    match:
+      - any: [hallucinations]
+    sources: [project_policy, telemanas]
+    quote: "New hallucinations need prompt assessment. India: Tele-MANAS 14416."
+
+# Shown with every EMERGENCY result (India-specific numbers; Andhra Pradesh and Telangana use 108).
+emergency_contacts:
+  - {label: "National emergency number (India)", number: "112"}
+  - {label: "Ambulance (most states incl. Andhra Pradesh, Telangana)", number: "108"}
+  - {label: "Tele-MANAS mental health helpline", number: "14416"}

@@ -1,0 +1,186 @@
+# MediGuide AI - language cue words for negation and attribute extraction
+# ------------------------------------------------------------------------------------
+# negation.pre        cue BEFORE a symptom negates it ("no fever", "I don't have a cough")
+# negation.post       cue AFTER a symptom negates it ("fever has gone")
+# negation.pseudo     look like negation but are NOT ("not sure", "no better") -> symptom stays present
+# negation.terminate  stop a negation scope ("no fever BUT headache", "no cough. I have pain")
+# hedge               uncertainty ("maybe", "I think") -> symptom kept as present (conservative),
+#                     but flagged so the user is asked to confirm
+# severity/onset/progression/frequency: modifiers attached to the nearest symptom
+#
+# English: project draft. Telugu/Hindi sections are added in Phase 4.
+# ------------------------------------------------------------------------------------
+version: 1
+
+en:
+  # optional words allowed BETWEEN the words of a symptom phrase ("can't move my LEFT arm")
+  phrase_modifiers: [left, right, both, upper, lower, whole, entire, top, bottom]
+  # grammar helpers used by the negation/clause logic
+  scope_filler: [or, and, nor, any, a, an, the, of, my, some, other, signs, sign]
+  clause_words: [";", but, however, although, though, also, whereas]
+  clause_starters: [i, my, he, she, it, they, we, but, and]
+  negators: [not, "n't", "no", never]
+  negation:
+    scope_tokens: 6
+    post_scope_tokens: 3
+    pre: ["no", "not", "n't", "never", "without", "denies", "deny", "denied", "don't have", "do not have",
+          "doesn't have", "does not have", "didn't have", "did not have", "haven't had", "have not had",
+          "hasn't had", "has not had", "free of", "negative for", "absence of", "no sign of", "no signs of",
+          "neither", "nor", "none", "don't feel", "do not feel", "not having", "no more"]
+    post: ["is gone", "has gone", "went away", "has gone away", "resolved", "has resolved", "has stopped",
+           "stopped", "is better now", "not anymore", "no longer"]
+    pseudo: ["not sure", "not certain", "no improvement", "no better", "not better", "not getting better",
+             "not improving", "no relief", "not only", "not just", "no change", "not stopping", "won't stop",
+             "will not stop", "can't stop", "cannot stop", "no idea", "don't know", "do not know", "not go away", "not going away",
+             "doesn't go away", "does not go away", "won't go away"]
+    terminate: ["but", "however", "although", "though", "except", "apart from", "aside from", "yet",
+                "i have", "i've", "i am", "i'm", "i feel", "i've got", "i have got", "there is", "there's",
+                "also", "which", "who", "only", "just", ";"]
+  hedge: ["don't know", "do not know", "maybe", "might", "perhaps", "possibly", "i think", "probably", "not sure", "kind of", "sort of", "a bit like"]
+  severity:
+    severe: ["severe", "severely", "very bad", "really bad", "terrible", "terribly", "unbearable", "excruciating",
+             "intense", "extreme", "extremely", "worst", "agonising", "agonizing", "horrible", "awful",
+             "very severe", "crushing", "very painful", "so bad"]
+    moderate: ["moderate", "bad", "quite bad", "fairly bad", "pretty bad", "considerable"]
+    mild: ["mild", "mildly", "slight", "slightly", "a little", "little bit", "a bit", "minor", "low grade", "low-grade"]
+  onset:
+    sudden: ["suddenly", "sudden", "all of a sudden", "out of nowhere", "abruptly", "came on fast", "out of the blue", "without warning"]
+    gradual: ["gradually", "gradual", "slowly", "over time", "bit by bit"]
+  progression:
+    worsening: ["getting worse", "worsening", "worse", "increasing", "more and more", "not getting better", "not improving"]
+    improving: ["getting better", "improving", "better now", "easing", "reducing", "less than before"]
+  frequency:
+    intermittent: ["comes and goes", "on and off", "off and on", "intermittent", "occasionally", "sometimes", "now and then", "every now and then"]
+    constant: ["constant", "constantly", "continuous", "continuously", "all the time", "nonstop", "non-stop", "all day"]
+
+# ======================================================================================
+# TELUGU - DRAFT, PENDING NATIVE-SPEAKER REVIEW
+# Telugu is SOV and negation usually FOLLOWS the symptom: "జ్వరం లేదు" (no fever).
+# Suffixes attach to nouns (జ్వరంతో, తలనొప్పిగా, కడుపులో); `suffixes` lists the endings the
+# matcher accepts after any vocabulary word. Words ending in anusvara (జ్వరం) also match
+# the ము/మ forms (జ్వరము, జ్వరమే).
+# ======================================================================================
+te:
+  # side words + intensity/onset adverbs that often sit INSIDE a phrase ("కడుపులో బాగా నొప్పి")
+  phrase_modifiers: [ఎడమ, కుడి, రెండు, చాలా, బాగా, కొంచెం, కొద్దిగా, తీవ్రమైన, తీవ్రంగా, ఎక్కువగా, అకస్మాత్తుగా, హఠాత్తుగా, కూడా]
+  suffixes: [ంది, ుంది, తో, తోపాటు, తోనే, గా, గానే, లో, లోనే, కు, కి, ని, ను, వల్ల, నుండి, నుంచి, మీద, పై, లు, లూ, కూడా]
+  scope_filler: [మరియు, లేదా, ఏ, ఏమీ, కూడా, నాకు, నా, మా, ఇంకా, పాటు, తో]
+  clause_words: [కానీ, కాని, అయితే, ";"]
+  clause_starters: []
+  negators: [లేదు, లేవు, కాదు]
+  negation:
+    scope_tokens: 4
+    post_scope_tokens: 4
+    pre: [ఏ, ఏమాత్రం]
+    post: [లేదు, లేవు, లేదండి, లేవండి, లేకుండా, రాలేదు, కాదు, తగ్గిపోయింది, పోయింది, తగ్గిపోయాయి, ఆగిపోయింది]
+    pseudo: [తగ్గడం లేదు, తగ్గట్లేదు, ఆగడం లేదు, ఆగట్లేదు, తెలియదు, తెలీదు, పోవడం లేదు]
+    terminate: [కానీ, కాని, అయితే, ఉంది, ఉన్నాయి, వుంది, ఉంటుంది, వస్తోంది, వస్తుంది, ఉందండి]
+  hedge: [ఏమో, బహుశా, అనుకుంటా, అనుకుంటున్నా, తెలియదు, తెలీదు, అనిపిస్తోంది]
+  severity:
+    severe: [తీవ్రమైన, తీవ్రంగా, భరించలేని, భరించలేనంత, విపరీతమైన, విపరీతంగా, చాలా ఎక్కువ, చాలా తీవ్రంగా, ఎక్కువగా]
+    moderate: [చాలా, బాగా, మధ్యస్థంగా]
+    mild: [కొంచెం, కొద్దిగా, స్వల్ప, స్వల్పంగా, తక్కువగా, లైట్‌గా]
+  onset:
+    sudden: [అకస్మాత్తుగా, హఠాత్తుగా, ఉన్నట్టుండి, ఒక్కసారిగా, సడన్‌గా]
+    gradual: [నెమ్మదిగా, క్రమంగా, మెల్లగా]
+  progression:
+    worsening: [ఎక్కువ అవుతోంది, ఎక్కువవుతోంది, పెరుగుతోంది, తీవ్రమవుతోంది, తగ్గడం లేదు, తగ్గట్లేదు]
+    improving: [తగ్గుతోంది, తగ్గుముఖం, కాస్త తగ్గింది, మెరుగవుతోంది]
+  frequency:
+    intermittent: [అప్పుడప్పుడు, వస్తూ పోతూ, మధ్య మధ్యలో, అప్పుడప్పుడూ]
+    constant: [ఎప్పుడూ, నిరంతరం, రోజంతా, ఆగకుండా]
+
+# ======================================================================================
+# HINDI - DRAFT, PENDING NATIVE-SPEAKER REVIEW
+# Negation mostly FOLLOWS the symptom ("बुखार नहीं है") but बिना / न come before it.
+# Text and terms are normalised (nukta removed, chandrabindu -> anusvara) before matching.
+# ======================================================================================
+hi:
+  # side words + intensity/onset adverbs that often sit INSIDE a phrase ("पेट में अचानक दर्द")
+  phrase_modifiers: [बाएं, बाएँ, दाएं, दाएँ, बायें, दायें, दोनों, ऊपरी, निचले, निचला, अचानक, बहुत, तेज, तेज़, हल्का, हल्की, थोड़ा, थोड़ी, काफी, ज्यादा, ज़्यादा, भी]
+  # verb/noun endings accepted after Hindi vocabulary words (दिख -> दिखने, सूज -> सूजन)
+  suffixes: [ने, ना, नी, ता, ती, ते, ा, ी, े, ें, ों, ाई, ाया, ाए, न]
+  scope_filler: [या, और, कोई, भी, मुझे, मेरे, मेरी, मेरा, तो, एकदम, बिल्कुल, बिलकुल]
+  clause_words: [लेकिन, पर, मगर, परंतु, परन्तु, किंतु, ";"]
+  clause_starters: []
+  negators: [नहीं, नही, न, ना]
+  negation:
+    scope_tokens: 4
+    post_scope_tokens: 4
+    pre: [बिना, न, ना, कोई नहीं]
+    post: [नहीं, नही, ना, नहीं है, नहीं हैं, चला गया, चली गई, ठीक हो गया, ठीक हो गई, गायब हो गया, खत्म हो गया]
+    pseudo: [पता नहीं, कम नहीं, रुक नहीं, ठीक नहीं हो, बंद नहीं, कम नहीं हो रहा, रुक नहीं रहा]
+    terminate: [लेकिन, पर, मगर, परंतु, है, हैं, था, थी, हो रहा, हो रही, हो रहे, के, की]
+  hedge: [शायद, लगता है, पता नहीं, मुझे लगता, हो सकता]
+  severity:
+    severe: [बहुत तेज, बहुत तेज़, बहुत ज्यादा, बहुत ज़्यादा, असहनीय, गंभीर, भयंकर, भयानक, बर्दाश्त नहीं, सहन नहीं, तेज]
+    moderate: [बहुत, काफी, काफ़ी, ज्यादा, ज़्यादा]
+    mild: [हल्का, हल्की, हल्के, थोड़ा, थोड़ी, थोड़े, मामूली, कम]
+  onset:
+    sudden: [अचानक, एकदम से, एकाएक, अचानक से]
+    gradual: [धीरे धीरे, धीरे-धीरे, धीरे से]
+  progression:
+    worsening: [बढ़ रहा, बढ़ रही, बढ़ रहे, बढ़ता जा रहा, बढ़ती जा रही, और खराब, ज्यादा हो रहा, ज्यादा हो रही, ज्यादा हो रहे, कम नहीं हो रहा, कम नहीं हो रही, ठीक नहीं हो रहा, ठीक नहीं हो रही, ठीक नहीं हो रहे]
+    improving: [कम हो रहा, कम हो रही, कम हो रहे, ठीक हो रहा, ठीक हो रही, ठीक हो रहे, आराम है, बेहतर]
+  frequency:
+    intermittent: [कभी कभी, कभी-कभी, रुक रुक कर, रुक-रुक कर, आता जाता, आती जाती]
+    constant: [लगातार, हर समय, पूरे दिन, दिन भर, हमेशा]
+
+# Common misspellings -> correct form (applied before matching; original text is kept).
+spelling_en:
+  sevre: severe
+  servere: severe
+  sivere: severe
+  feaver: fever
+  fevar: fever
+  headach: headache
+  hedache: headache
+  hedake: headache
+  stomache: stomach ache
+  stomachache: stomach ache
+  tummyache: tummy ache
+  diarhea: diarrhea
+  diarrea: diarrhea
+  diarhoea: diarrhoea
+  nausia: nausea
+  nausious: nauseous
+  nauseas: nausea
+  vomitting: vomiting
+  vommiting: vomiting
+  vomting: vomiting
+  dizzyness: dizziness
+  dizzines: dizziness
+  breathlesness: breathlessness
+  coughin: coughing
+  caugh: cough
+  coff: cough
+  seizer: seizure
+  seizers: seizures
+  siezure: seizure
+  unconcious: unconscious
+  concious: conscious
+  rashes: rash
+  alergy: allergy
+  alergic: allergic
+  palpatations: palpitations
+  palpitation: palpitations
+  sweatting: sweating
+  numbnes: numbness
+  tierd: tired
+  tird: tired
+  fatige: fatigue
+  throte: throat
+  chestpain: chest pain
+  backpain: back pain
+  bodyache: body ache
+  bodypain: body pain
+  cant: "can't"
+  dont: "don't"
+  doesnt: "doesn't"
+  didnt: "didn't"
+  wont: "won't"
+  havent: "haven't"
+  hasnt: "hasn't"
+  isnt: "isn't"
+  im: "i'm"
+  ive: "i've"

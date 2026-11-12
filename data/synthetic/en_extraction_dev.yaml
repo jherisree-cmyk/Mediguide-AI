@@ -1,0 +1,68 @@
+# Experiment 1 - English symptom extraction, DEVELOPMENT set.
+# Hand-written by the project team. SYNTHETIC: for software testing only, not clinical data.
+# Expected values are what a careful human reader would extract, written BEFORE running the
+# system. This set is used for error analysis and fixing; the separate held-out set
+# (en_extraction_heldout.yaml) is written afterwards and scored once.
+#
+# present: concepts that must be found (not negated)  | negated: concepts that must be denied
+# attrs:   only the attributes listed are checked      | age_years / subject: optional
+cases:
+  # ---------------- basic ----------------
+  - {id: B01, cat: basic, text: "I have a fever and a headache.", present: [fever, headache]}
+  - {id: B02, cat: basic, text: "I have had a severe headache for two days, and I feel dizzy.", present: [headache, dizziness],
+     attrs: {headache: {severity: severe, duration_days: 2}}}
+  - {id: B03, cat: basic, text: "Since yesterday I've been vomiting and have loose motions.", present: [vomiting, diarrhoea],
+     attrs: {vomiting: {duration_days: 1}, diarrhoea: {duration_days: 1}}}
+  - {id: B04, cat: basic, text: "My throat hurts and I keep sneezing", present: [sore_throat, nasal_congestion]}
+  - {id: B05, cat: basic, text: "There is a rash on my arm that is very itchy", present: [rash, itching]}
+  - {id: B06, cat: basic, text: "Back pain for 3 weeks", present: [back_pain], attrs: {back_pain: {duration_days: 21}}}
+  - {id: B07, cat: basic, text: "I feel tired all the time and have no appetite", present: [fatigue, loss_of_appetite],
+     attrs: {fatigue: {frequency: constant}}}
+  - {id: B08, cat: basic, text: "Burning when I pee and I need to go frequently", present: [painful_urination, urinary_frequency]}
+  # ---------------- negation ----------------
+  - {id: N01, cat: negation, text: "I do not have chest pain.", present: [], negated: [chest_pain]}
+  - {id: N02, cat: negation, text: "No fever, no cough.", present: [], negated: [fever, cough]}
+  - {id: N03, cat: negation, text: "I have a headache but no fever.", present: [headache], negated: [fever]}
+  - {id: N04, cat: negation, text: "Denies shortness of breath.", present: [], negated: [shortness_of_breath]}
+  - {id: N05, cat: negation, text: "Without any vomiting or diarrhea, I have stomach ache.", present: [abdominal_pain], negated: [vomiting, diarrhoea]}
+  - {id: N06, cat: negation, text: "The fever went away but the cough is still there.", present: [cough], negated: [fever]}
+  - {id: N07, cat: negation, text: "I can't breathe properly", present: [severe_breathing_distress, shortness_of_breath]}
+  - {id: N08, cat: negation, text: "I'm not sure whether it's a fever", present: [fever], attrs: {fever: {hedged: true}}}
+  - {id: N09, cat: negation, text: "Never had a seizure before, but now my chest feels tight", present: [chest_tightness], negated: [seizure]}
+  - {id: N10, cat: negation, text: "I don't have a headache, fever or body ache, only a cough.", present: [cough], negated: [headache, fever, body_ache]}
+  - {id: N11, cat: negation, text: "My chest pain is not severe", present: [chest_pain], attrs: {chest_pain: {severity: null}}}
+  - {id: N12, cat: negation, text: "No pain in my chest", present: [], negated: [chest_pain]}
+  - {id: N13, cat: negation, text: "I am not pregnant", present: [], negated: [pregnant]}
+  - {id: N14, cat: negation, text: "No chest pain. Breathing is fine.", present: [], negated: [chest_pain]}
+  # ---------------- spelling ----------------
+  - {id: S01, cat: spelling, text: "I have a bad hedache and feaver", present: [headache, fever]}
+  - {id: S02, cat: spelling, text: "vomitting since morning and dizzyness", present: [vomiting, dizziness], attrs: {vomiting: {duration_days: 0.25}}}
+  - {id: S03, cat: spelling, text: "Stomache since 2 days", present: [abdominal_pain], attrs: {abdominal_pain: {duration_days: 2}}}
+  - {id: S04, cat: spelling, text: "sevre chest pain", present: [chest_pain], attrs: {chest_pain: {severity: severe}}}
+  - {id: S05, cat: spelling, text: "diarrhoea and nausia", present: [diarrhoea, nausea]}
+  - {id: S06, cat: spelling, text: "COUGH AND FEVER", present: [cough, fever]}
+  - {id: S07, cat: spelling, text: "i cant swallow and my throat is swollen", present: [difficulty_swallowing, face_throat_swelling]}
+  # ---------------- sentence structure ----------------
+  - {id: T01, cat: structure, text: "Headache. Dizzy. Since this morning.", present: [headache, dizziness],
+     attrs: {headache: {duration_days: 0.25}, dizziness: {duration_days: 0.25}}}
+  - {id: T02, cat: structure, text: "Pain in my stomach that started suddenly and is getting worse", present: [abdominal_pain],
+     attrs: {abdominal_pain: {onset: sudden, progression: worsening}}}
+  - {id: T03, cat: structure, text: "It has been 3 days that I have fever", present: [fever], attrs: {fever: {duration_days: 3}}}
+  - {id: T04, cat: structure, text: "For the last week I've had a cough", present: [cough], attrs: {cough: {duration_days: 7}}}
+  - {id: T05, cat: structure, text: "Fever, body pains, weakness", present: [fever, body_ache, general_weakness]}
+  - {id: T06, cat: structure, text: "My father collapsed and is not responding", present: [fainting, unconsciousness], subject: other}
+  - {id: T07, cat: structure, text: "She has had diarrhoea and vomiting for 2 days and is very weak", present: [diarrhoea, vomiting, general_weakness],
+     attrs: {diarrhoea: {duration_days: 2}, vomiting: {duration_days: 2}}}
+  - {id: T08, cat: structure, text: "pain 9 out of 10 in my lower back", present: [back_pain], attrs: {back_pain: {pain_score: 9, severity: severe}}}
+  - {id: T09, cat: structure, text: "Had a fit this morning", present: [seizure]}
+  - {id: T10, cat: structure, text: "Sore throat and runny nose for a couple of days, getting better", present: [sore_throat, nasal_congestion],
+     attrs: {sore_throat: {duration_days: 2, progression: improving}}}
+  - {id: T11, cat: structure, text: "My heart is racing and I feel anxious", present: [palpitations, anxiety]}
+  - {id: T12, cat: structure, text: "I have a mild headache, no other symptoms", present: [headache], attrs: {headache: {severity: mild}}}
+  # ---------------- warning signs / context ----------------
+  - {id: W01, cat: warning, text: "Chest pain going down my left arm and I'm sweating a lot", present: [chest_pain, radiating_pain, sweating]}
+  - {id: W02, cat: warning, text: "My face is drooping and my speech is slurred", present: [face_droop, speech_difficulty]}
+  - {id: W03, cat: warning, text: "I'm 34 years old and pregnant, with some bleeding", present: [pregnant, bleeding], age_years: 34}
+  - {id: W04, cat: warning, text: "Thoughts of killing myself", present: [suicidal_thoughts]}
+  - {id: W05, cat: warning, text: "I was stung by a bee and now my lips are swollen and I'm wheezing", present: [face_throat_swelling, wheezing]}
+  - {id: W06, cat: warning, text: "My 2 month old baby has a fever since last night", present: [fever], age_years: 0.1667, subject: other}

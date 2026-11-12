@@ -1,0 +1,25 @@
+# --- NLP ---
+spacy==3.8.18              # tokenisation + PhraseMatcher for symptom phrases
+indic-nlp-library==0.92    # Telugu/Hindi normalisation and tokenisation
+# --- Data / ML ---
+numpy==2.5.4
+pandas==3.1.1              # also reads NHAMCS Stata/SAS files
+scikit-learn==1.9.1        # Decision Tree, Random Forest, metrics
+joblib==1.6.0              # model serialisation
+PyYAML==6.0.3              # symptom lexicon + red-flag rule files
+openpyxl==3.1.5            # reads the Zenodo vignette workbook (.xlsx)
+tabulate==0.9.0            # markdown tables in generated reports
+# --- Visualisation (report figures) ---
+matplotlib==3.11.2
+seaborn==0.13.2
+# --- Backend ---
+fastapi==0.162.3
+uvicorn[standard]==0.54.0
+pydantic==2.14.3
+SQLAlchemy==2.1.8
+argon2-cffi==25.1.0        # password hashing
+PyJWT==2.15.1              # session tokens
+cryptography==50.0.2       # Fernet encryption of stored symptom text
+# --- Testing ---
+pytest==9.2.0
+httpx==0.28.1              # FastAPI test client

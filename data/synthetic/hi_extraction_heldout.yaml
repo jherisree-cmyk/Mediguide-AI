@@ -1,0 +1,23 @@
+# Experiment 2 - Hindi HELD-OUT set. Written after the dev-set fixes; scored ONCE.
+# SYNTHETIC (developer-written), software testing only; pending native-speaker review.
+cases:
+  - {id: HH01, cat: basic, text: "मुझे खांसी, जुकाम और बदन दर्द है", present: [cough, nasal_congestion, body_ache]}
+  - {id: HH02, cat: basic, text: "चार दिन से दस्त हो रहे हैं", present: [diarrhoea], attrs: {diarrhoea: {duration_days: 4}}}
+  - {id: HH03, cat: basic, text: "हल्का सा सिरदर्द है", present: [headache], attrs: {headache: {severity: mild}}}
+  - {id: HH04, cat: basic, text: "कल मैं बाजार गया था, कोई परेशानी नहीं है", present: []}
+  - {id: HH05, cat: basic, text: "कल रात से पेट में दर्द है", present: [abdominal_pain], attrs: {abdominal_pain: {duration_days: 0.5}}}
+  - {id: HH06, cat: negation, text: "उल्टी नहीं हुई पर जी मिचला रहा है", present: [nausea], negated: [vomiting]}
+  - {id: HH07, cat: structure, text: "मेरी माँ को सांस फूल रही है", present: [shortness_of_breath], subject: other}
+  - {id: HH08, cat: negation, text: "मुझे बुखार नहीं है और सिरदर्द भी नहीं है", present: [], negated: [fever, headache]}
+  - {id: HH09, cat: warning, text: "छाती में दर्द और पसीना आ रहा है", present: [chest_pain, sweating]}
+  - {id: HH10, cat: warning, text: "अचानक धुंधला दिखने लगा", present: [vision_problem], attrs: {vision_problem: {onset: sudden}}}
+  - {id: HH11, cat: warning, text: "मेरे बेटे को दौरे पड़े", present: [seizure], subject: other}
+  - {id: HH12, cat: basic, text: "मल में खून आ रहा है", present: [blood_in_stool]}
+  - {id: HH13, cat: warning, text: "जीभ सूज गई है और निगलने में तकलीफ है", present: [face_throat_swelling, difficulty_swallowing]}
+  - {id: HH14, cat: warning, text: "मैं जीना नहीं चाहता", present: [suicidal_thoughts]}
+  - {id: HH15, cat: structure, text: "चक्कर कम हो रहे हैं", present: [dizziness], attrs: {dizziness: {progression: improving}}}
+  - {id: HH16, cat: warning, text: "मेरी उम्र 35 है, मैं गर्भवती हूं और खून आ रहा है", present: [pregnant, bleeding], age_years: 35}
+  - {id: HH17, cat: spelling, text: "मुझे headache और vomiting है", present: [headache, vomiting]}
+  - {id: HH18, cat: structure, text: "एक हफ्ते से खांसी ठीक नहीं हो रही", present: [cough], attrs: {cough: {duration_days: 7, progression: worsening}}}
+  - {id: HH19, cat: warning, text: "बायां हाथ नहीं हिल रहा", present: [focal_weakness]}
+  - {id: HH20, cat: basic, text: "बुखार के साथ ठंड भी लग रही है", present: [fever, chills]}

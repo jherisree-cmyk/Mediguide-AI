@@ -1,0 +1,27 @@
+Cases: 20   file: data/synthetic/te_extraction_heldout.yaml
+Present concepts  precision 1.000  recall 1.000  F1 1.000   (tp=25 fp=0 fn=0)
+Negation          3/3 detected
+Attributes        7/7 correct
+Case exact match  20/20 (100.0%)
+By category (exact / total): basic 7/7, negation 2/2, structure 3/3, warning 7/7, spelling 1/1
+
+Cases: 20   file: data/synthetic/hi_extraction_heldout.yaml
+Present concepts  precision 1.000  recall 0.880  F1 0.936   (tp=22 fp=0 fn=3)
+Negation          3/3 detected
+Attributes        4/7 correct
+Case exact match  15/20 (75.0%)
+By category (exact / total): basic 6/7, negation 2/2, structure 1/3, warning 5/7, spelling 1/1
+
+Errors:
+  HH10  'अचानक धुंधला दिखने लगा'
+        missed: ['vision_problem']
+        vision_problem.onset: want sudden, got <absent>
+  HH15  'चक्कर कम हो रहे हैं'
+        dizziness.progression: want improving, got None
+  HH16  'मेरी उम्र 35 है, मैं गर्भवती हूं और खून आ रहा है'
+        missed: ['bleeding']
+  HH18  'एक हफ्ते से खांसी ठीक नहीं हो रही'
+        cough.progression: want worsening, got None
+  HH20  'बुखार के साथ ठंड भी लग रही है'
+        missed: ['chills']
+

@@ -1,0 +1,48 @@
+# Experiment 2 - Telugu symptom extraction, DEVELOPMENT set.
+# SYNTHETIC, written by the project developer (not a native-speaker panel): software testing only.
+# PENDING native-speaker review of the sentences themselves.
+cases:
+  # ---------------- basic ----------------
+  - {id: TB01, cat: basic, text: "నాకు జ్వరం మరియు తలనొప్పి ఉన్నాయి.", present: [fever, headache]}
+  - {id: TB02, cat: basic, text: "రెండు రోజులుగా తీవ్రమైన తలనొప్పి ఉంది, కళ్ళు తిరుగుతున్నాయి.", present: [headache, dizziness],
+     attrs: {headache: {severity: severe, duration_days: 2}}}
+  - {id: TB03, cat: basic, text: "నిన్నటి నుండి వాంతులు, విరేచనాలు అవుతున్నాయి", present: [vomiting, diarrhoea],
+     attrs: {vomiting: {duration_days: 1}, diarrhoea: {duration_days: 1}}}
+  - {id: TB04, cat: basic, text: "గొంతు నొప్పి, జలుబు ఉంది", present: [sore_throat, nasal_congestion]}
+  - {id: TB05, cat: basic, text: "చేతి మీద దద్దుర్లు, చాలా దురదగా ఉంది", present: [rash, itching]}
+  - {id: TB06, cat: basic, text: "మూడు వారాలుగా నడుము నొప్పి", present: [back_pain], attrs: {back_pain: {duration_days: 21}}}
+  - {id: TB07, cat: basic, text: "ఆకలి లేదు, చాలా నీరసంగా ఉంది", present: [loss_of_appetite, fatigue]}
+  - {id: TB08, cat: basic, text: "మూత్రంలో మంటగా ఉంది", present: [painful_urination]}
+  # ---------------- negation ----------------
+  - {id: TN01, cat: negation, text: "నాకు ఛాతీ నొప్పి లేదు", present: [], negated: [chest_pain]}
+  - {id: TN02, cat: negation, text: "జ్వరం లేదు, దగ్గు లేదు", present: [], negated: [fever, cough]}
+  - {id: TN03, cat: negation, text: "తలనొప్పి ఉంది కానీ జ్వరం లేదు", present: [headache], negated: [fever]}
+  - {id: TN04, cat: negation, text: "జ్వరం, దగ్గు ఏమీ లేవు", present: [], negated: [fever, cough]}
+  - {id: TN05, cat: negation, text: "ఊపిరి అందడం లేదు", present: [severe_breathing_distress, shortness_of_breath]}
+  - {id: TN06, cat: negation, text: "జ్వరం తగ్గిపోయింది కానీ దగ్గు ఇంకా ఉంది", present: [cough], negated: [fever]}
+  - {id: TN07, cat: negation, text: "కడుపు నొప్పి తగ్గడం లేదు", present: [abdominal_pain], attrs: {abdominal_pain: {progression: worsening}}}
+  - {id: TN08, cat: negation, text: "తలనొప్పి ఎక్కువగా లేదు", present: [headache], attrs: {headache: {severity: null}}}
+  - {id: TN09, cat: negation, text: "నేను గర్భవతిని కాదు", present: [], negated: [pregnant]}
+  - {id: TN10, cat: negation, text: "ఫిట్స్ రాలేదు, కానీ ఛాతీ బిగుతుగా ఉంది", present: [chest_tightness], negated: [seizure]}
+  # ---------------- spelling / script / code-mixing ----------------
+  - {id: TS01, cat: spelling, text: "నాకు జ్వరముంది", present: [fever]}
+  - {id: TS02, cat: spelling, text: "ఛాతి నొప్పి వస్తోంది", present: [chest_pain]}
+  - {id: TS03, cat: spelling, text: "నాకు fever మరియు headache ఉంది", present: [fever, headache]}
+  - {id: TS04, cat: spelling, text: "నాకు cough లేదు కానీ throat pain ఉంది", present: [sore_throat], negated: [cough]}
+  - {id: TS05, cat: spelling, text: "౩ రోజులుగా జ్వరం", present: [fever], attrs: {fever: {duration_days: 3}}}
+  # ---------------- structure ----------------
+  - {id: TT01, cat: structure, text: "కడుపులో నొప్పి అకస్మాత్తుగా మొదలైంది, ఎక్కువ అవుతోంది", present: [abdominal_pain],
+     attrs: {abdominal_pain: {onset: sudden, progression: worsening}}}
+  - {id: TT02, cat: structure, text: "మా బాబుకి జ్వరం వచ్చింది", present: [fever], subject: other}
+  - {id: TT03, cat: structure, text: "నా వయస్సు 60, ఛాతీలో నొప్పి వస్తోంది", present: [chest_pain], age_years: 60}
+  - {id: TT04, cat: structure, text: "అప్పుడప్పుడు గుండె దడగా ఉంటుంది", present: [palpitations], attrs: {palpitations: {frequency: intermittent}}}
+  - {id: TT05, cat: structure, text: "నాకు 2 రోజుల నుండి విరేచనాలు", present: [diarrhoea], attrs: {diarrhoea: {duration_days: 2}}}
+  - {id: TT06, cat: structure, text: "పొద్దున్న నుండి తల తిరుగుతోంది", present: [dizziness], attrs: {dizziness: {duration_days: 0.25}}}
+  - {id: TT07, cat: structure, text: "2 నెలల పాపకి జ్వరం", present: [fever], age_years: 0.1667, subject: other}
+  # ---------------- warning signs ----------------
+  - {id: TW01, cat: warning, text: "ఛాతీ నొప్పి ఎడమ చేతికి పాకుతోంది, చెమటలు పడుతున్నాయి", present: [chest_pain, radiating_pain, sweating]}
+  - {id: TW02, cat: warning, text: "ముఖం ఒక వైపు వాలిపోయింది, మాట తడబడుతోంది", present: [face_droop, speech_difficulty]}
+  - {id: TW03, cat: warning, text: "పెదవులు వాచాయి, ఊపిరి ఆడటం కష్టంగా ఉంది", present: [face_throat_swelling, shortness_of_breath]}
+  - {id: TW04, cat: warning, text: "నాకు చనిపోవాలని ఉంది", present: [suicidal_thoughts]}
+  - {id: TW05, cat: warning, text: "రక్తం ఆగడం లేదు", present: [heavy_bleeding, bleeding]}
+  - {id: TW06, cat: warning, text: "మా నాన్న స్పృహ తప్పి పడిపోయారు", present: [fainting], subject: other}

@@ -1,0 +1,20 @@
+Cases: 30   file: data/synthetic/en_extraction_heldout.yaml
+Present concepts  precision 0.953  recall 0.911  F1 0.932   (tp=41 fp=2 fn=4)
+Negation          5/6 detected
+Attributes        9/11 correct
+Case exact match  26/30 (86.7%)
+By category (exact / total): basic 6/6, negation 6/7, spelling 4/4, structure 5/6, warning 5/7
+
+Errors:
+  H12  "I don't think I have a fever"
+        extra: ['fever']
+        negation missed: ['fever']
+  H20  'Pain in my lower stomach, 6/10, started gradually'
+        missed: ['abdominal_pain']
+        abdominal_pain.pain_score: want 6, got <absent>
+        abdominal_pain.onset: want gradual, got <absent>
+  H24  "I suddenly can't move my left arm and my face looks droopy"
+        missed: ['face_droop', 'focal_weakness']
+  H29  "my tongue is swelling up and I can't breathe"
+        extra: ['swelling']
+        missed: ['face_throat_swelling']

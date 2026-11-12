@@ -1,0 +1,23 @@
+# Experiment 2 - Telugu HELD-OUT set. Written after the dev-set fixes; scored ONCE.
+# SYNTHETIC (developer-written), software testing only; pending native-speaker review.
+cases:
+  - {id: TH01, cat: basic, text: "నాకు దగ్గు, జలుబు, ఒళ్ళు నొప్పులు ఉన్నాయి", present: [cough, nasal_congestion, body_ache]}
+  - {id: TH02, cat: basic, text: "నాలుగు రోజులుగా విరేచనాలు అవుతున్నాయి", present: [diarrhoea], attrs: {diarrhoea: {duration_days: 4}}}
+  - {id: TH03, cat: basic, text: "కొంచెం తలనొప్పిగా ఉంది", present: [headache], attrs: {headache: {severity: mild}}}
+  - {id: TH04, cat: basic, text: "చలికాలంలో నాకు ఏ సమస్యా లేదు", present: []}
+  - {id: TH05, cat: basic, text: "నిన్న రాత్రి నుండి కడుపు నొప్పి", present: [abdominal_pain], attrs: {abdominal_pain: {duration_days: 0.5}}}
+  - {id: TH06, cat: negation, text: "వాంతులు లేవు కానీ వికారంగా ఉంది", present: [nausea], negated: [vomiting]}
+  - {id: TH07, cat: structure, text: "మా అమ్మకి ఆయాసంగా ఉంది", present: [shortness_of_breath], subject: other}
+  - {id: TH08, cat: negation, text: "నాకు జ్వరం లేదు, తలనొప్పి కూడా లేదు", present: [], negated: [fever, headache]}
+  - {id: TH09, cat: warning, text: "గుండెలో నొప్పి, చెమటలు పడుతున్నాయి", present: [chest_pain, sweating]}
+  - {id: TH10, cat: warning, text: "నాకు హఠాత్తుగా చూపు మసకబారింది", present: [vision_problem], attrs: {vision_problem: {onset: sudden}}}
+  - {id: TH11, cat: warning, text: "నా కొడుకుకి ఫిట్స్ వచ్చాయి", present: [seizure], subject: other}
+  - {id: TH12, cat: basic, text: "మలంలో రక్తం పడుతోంది", present: [blood_in_stool]}
+  - {id: TH13, cat: warning, text: "నాలుక వాపు వచ్చింది, మింగడం కష్టంగా ఉంది", present: [face_throat_swelling, difficulty_swallowing]}
+  - {id: TH14, cat: warning, text: "నాకు బ్రతకాలని లేదు", present: [suicidal_thoughts]}
+  - {id: TH15, cat: structure, text: "తల తిరగడం తగ్గుతోంది", present: [dizziness], attrs: {dizziness: {progression: improving}}}
+  - {id: TH16, cat: warning, text: "నా వయసు 35, నేను గర్భవతిని, రక్తస్రావం అవుతోంది", present: [pregnant, bleeding], age_years: 35}
+  - {id: TH17, cat: spelling, text: "నాకు headache మరియు vomiting ఉన్నాయి", present: [headache, vomiting]}
+  - {id: TH18, cat: structure, text: "ఒక వారం నుండి దగ్గు తగ్గడం లేదు", present: [cough], attrs: {cough: {duration_days: 7, progression: worsening}}}
+  - {id: TH19, cat: warning, text: "ఎడమ చేయి కదలడం లేదు", present: [focal_weakness]}
+  - {id: TH20, cat: basic, text: "జ్వరంతో పాటు చలి కూడా ఉంది", present: [fever, chills]}

@@ -1,0 +1,183 @@
+{
+  "app": {
+    "name": "MediGuide AI",
+    "tagline": "How urgently should you get medical help?"
+  },
+  "nav": {
+    "home": "Home",
+    "assess": "Check symptoms",
+    "history": "History",
+    "profile": "Profile",
+    "admin": "Admin",
+    "login": "Log in",
+    "register": "Register",
+    "logout": "Log out",
+    "language": "Language",
+    "skip": "Skip to main content",
+    "themeDark": "Dark mode",
+    "themeLight": "Light mode"
+  },
+  "level": {
+    "EMERGENCY": "Emergency",
+    "URGENT": "Urgent",
+    "ROUTINE": "Routine"
+  },
+  "welcome": {
+    "title": "Describe your symptoms in your own words",
+    "intro": "MediGuide reads a description in English, Telugu or Hindi, asks a few questions if needed, and tells you how urgently to seek medical care.",
+    "doesTitle": "What it does",
+    "does": [
+      "Understands everyday language, including 'no' and 'not'",
+      "Checks for emergency warning signs first",
+      "Explains why it gave its recommendation"
+    ],
+    "doesNotTitle": "What it does NOT do",
+    "doesNot": [
+      "Diagnose a disease",
+      "Recommend or prescribe medicines",
+      "Replace a doctor"
+    ],
+    "start": "Start a symptom check",
+    "noAccount": "No account needed. Your description is not stored unless you log in and choose to save it.",
+    "emergencyNow": "If someone may be in danger right now, do not use this app. Call 112 or 108."
+  },
+  "lang": {
+    "title": "Choose your language",
+    "hint": "You can describe symptoms in any of these languages. Results are shown in the language you choose."
+  },
+  "auth": {
+    "loginTitle": "Log in",
+    "registerTitle": "Create an account",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters",
+    "name": "Name (optional)",
+    "login": "Log in",
+    "register": "Create account",
+    "haveAccount": "Already have an account? Log in",
+    "noAccount": "No account? Create one",
+    "why": "An account lets you save assessments and set your age and language once. It is optional."
+  },
+  "assess": {
+    "title": "Describe your symptoms",
+    "label": "What are you feeling? Include how long and how bad, if you can.",
+    "placeholder": "e.g. I have had a severe headache for two days and I feel dizzy",
+    "examples": "Examples",
+    "age": "Age of the person (optional)",
+    "ageHint": "Years. For babies use decimals, e.g. 0.5 = 6 months.",
+    "inputLang": "Language of your description",
+    "auto": "Detect automatically",
+    "save": "Save this assessment to my history",
+    "saveLogin": "Log in to save assessments to your history.",
+    "submit": "Check urgency",
+    "checking": "Checking…",
+    "tooShort": "Please describe your symptoms.",
+    "voice": "Speak",
+    "voiceStop": "Stop listening",
+    "listening": "Listening… speak now",
+    "voiceHint": "Your browser's speech service turns speech into text (it may send the audio to Google or Microsoft). Check the text before you submit.",
+    "voiceError": "Could not use the microphone."
+  },
+  "followup": {
+    "title": "A few questions",
+    "intro": "These answers can change how urgent your situation is.",
+    "understood": "We understood",
+    "nothingUnderstood": "We could not recognise symptoms in your description.",
+    "edit": "Not right? Change your description",
+    "submit": "See my result",
+    "optional": "You can leave a question blank if you are not sure.",
+    "yearsUnit": "years",
+    "painUnit": "/ 10",
+    "selectAll": "Select all that apply"
+  },
+  "result": {
+    "title": "Your result",
+    "emergencyBanner": "Call for emergency help now",
+    "call112": "Call 112",
+    "call108": "Call 108 (ambulance)",
+    "symptoms": "Symptoms we understood",
+    "denied": "Symptoms you said you do not have",
+    "warnings": "Warning signs found",
+    "because": "Because of",
+    "source": "Source",
+    "quote": "Guidance",
+    "modelPath": "How the decision tree reached its result",
+    "modelHint": "The model learned from real emergency-department triage data. It can only raise urgency, never lower a warning sign.",
+    "corrected": "We read some words as",
+    "uncertain": "you were not sure",
+    "days": "{{count}} days",
+    "day": "less than a day",
+    "severity": {
+      "mild": "mild",
+      "moderate": "moderate",
+      "severe": "severe"
+    },
+    "onset": {
+      "sudden": "started suddenly",
+      "gradual": "started gradually"
+    },
+    "newAssessment": "New symptom check",
+    "toHistory": "Go to my history",
+    "printable": "Print",
+    "notDiagnosis": "This is not a diagnosis.",
+    "readAloud": "Read aloud",
+    "stopReading": "Stop",
+    "noVoice": "No voice for this language is installed on this device.",
+    "nearby": "Find a hospital near me",
+    "nearbyClinic": "Find a clinic near me",
+    "nearbyHint": "opens Google Maps in a new tab",
+    "download": "Download summary for a doctor",
+    "careActions": "Next actions"
+  },
+  "history": {
+    "title": "My saved assessments",
+    "empty": "You have no saved assessments yet.",
+    "view": "View",
+    "delete": "Delete",
+    "deleteAll": "Delete all",
+    "confirmDelete": "Delete this assessment permanently?",
+    "confirmDeleteAll": "Delete ALL saved assessments permanently?",
+    "deleted": "Deleted.",
+    "date": "Date",
+    "description": "Your description",
+    "back": "Back to history"
+  },
+  "profile": {
+    "title": "My profile",
+    "age": "Age (years)",
+    "sex": "Sex",
+    "female": "Female",
+    "male": "Male",
+    "notSay": "Prefer not to say",
+    "language": "Preferred language",
+    "name": "Name",
+    "save": "Save profile",
+    "saved": "Profile saved.",
+    "why": "Age and sex help the app avoid unnecessary questions. All fields are optional.",
+    "danger": "Delete my account",
+    "confirmDeleteAccount": "Delete your account and ALL saved assessments permanently?",
+    "privacy": "Your saved descriptions are encrypted. Anonymous usage counts (no names, no text) are kept to improve the service."
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "back": "Back",
+    "loginRequired": "Please log in first."
+  },
+  "live": {
+    "title": "Recognised so far",
+    "none": "No symptoms recognised yet. Keep typing.",
+    "notPresent": "not present",
+    "detecting": "Reading…",
+    "emergency": "Emergency warning sign recognised. Press “{{button}}” now, or call 112 / 108 if it is serious.",
+    "hint": "Updates as you type. Nothing is saved."
+  },
+  "summary": {
+    "title": "MediGuide AI: summary to show a doctor",
+    "date": "Date",
+    "urgency": "Urgency",
+    "nextStep": "Next step",
+    "description": "Description (in the person's own words)",
+    "generated": "Generated by an educational prototype. This is not a diagnosis."
+  }
+}

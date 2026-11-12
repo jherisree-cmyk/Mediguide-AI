@@ -1,0 +1,22 @@
+Cases: 68
+
+Confusion matrix (rows = expected, columns = rule engine)
+              EMERGENCY     URGENT       NONE
+EMERGENCY            34          0          0
+URGENT                0         16          2
+NONE                  0          0         16
+
+Emergency recall    34/34 = 1.000   <- primary safety metric
+Emergency precision 34/34 = 1.000
+Under-triaged cases 2   Over-triaged cases 0
+Fully correct by language: en 36/36, te 16/16, hi 14/16
+
+Errors:
+  HI10  'सीढ़ियां चढ़ने पर सांस फूलती है'
+        found: []
+        level: want URGENT, got NONE
+        rules missing: ['UR_BREATHLESSNESS'] (fired: [])
+  HI12  'कमर में बहुत तेज दर्द है'
+        found: []
+        level: want URGENT, got NONE
+        rules missing: ['UR_SEVERE_SYMPTOM'] (fired: [])

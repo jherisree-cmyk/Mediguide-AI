@@ -1,0 +1,185 @@
+# MediGuide AI - user-facing text in English, Telugu and Hindi (Module 8)
+# ------------------------------------------------------------------------------------
+# All safety-critical text shown to users comes from THIS file. It is never machine-
+# translated at runtime, so a reviewer can check every sentence once.
+# REVIEW STATUS: English - project draft.
+#                Telugu / Hindi - DRAFT, PENDING NATIVE-SPEAKER AND CLINICIAN REVIEW.
+# Placeholders in {braces} are filled by the program.
+# ------------------------------------------------------------------------------------
+version: 1
+status: draft-unreviewed
+
+levels:
+  EMERGENCY:
+    en: "Emergency: get emergency medical help now"
+    te: "అత్యవసరం: వెంటనే అత్యవసర వైద్య సహాయం పొందండి"
+    hi: "आपातकाल: तुरंत आपातकालीन चिकित्सा सहायता लें"
+  URGENT:
+    en: "Urgent: get a medical assessment today"
+    te: "త్వరగా: ఈ రోజే వైద్య పరీక్ష చేయించుకోండి"
+    hi: "तत्काल: आज ही डॉक्टर से जांच कराएं"
+  ROUTINE:
+    en: "Routine: book a non-emergency appointment with a doctor"
+    te: "సాధారణం: అత్యవసరం కాని వైద్య సంప్రదింపు కోసం సమయం తీసుకోండి"
+    hi: "सामान्य: डॉक्टर से गैर-आपातकालीन मुलाकात का समय लें"
+
+next_step:
+  EMERGENCY:
+    en: "Call 112 or 108 for an ambulance now, or go to the nearest emergency department. Do not drive yourself. Do not wait for symptoms to improve."
+    te: "వెంటనే అంబులెన్స్ కోసం 112 లేదా 108 కి కాల్ చేయండి, లేదా దగ్గరలోని అత్యవసర విభాగానికి వెళ్ళండి. మీరే వాహనం నడపకండి. లక్షణాలు తగ్గుతాయని ఎదురుచూడకండి."
+    hi: "अभी एम्बुलेंस के लिए 112 या 108 पर कॉल करें, या नज़दीकी आपातकालीन विभाग जाएं। खुद गाड़ी न चलाएं। लक्षणों के ठीक होने का इंतज़ार न करें।"
+  URGENT:
+    en: "Please see a doctor today: visit a hospital, clinic or urgent care centre. If you cannot be seen today, go to the emergency department."
+    te: "దయచేసి ఈ రోజే వైద్యుడిని కలవండి: ఆసుపత్రి లేదా క్లినిక్‌కు వెళ్ళండి. ఈ రోజు చూపించుకోలేకపోతే, అత్యవసర విభాగానికి వెళ్ళండి."
+    hi: "कृपया आज ही डॉक्टर को दिखाएं: अस्पताल या क्लिनिक जाएं। अगर आज दिखाना संभव न हो, तो आपातकालीन विभाग जाएं।"
+  ROUTINE:
+    en: "Book an appointment with a doctor in the next few days. If you are worried, do not wait: get medical advice sooner."
+    te: "రాబోయే కొన్ని రోజుల్లో వైద్యుడితో అపాయింట్‌మెంట్ తీసుకోండి. మీకు ఆందోళనగా ఉంటే ఎదురుచూడకండి: ముందుగానే వైద్య సలహా తీసుకోండి."
+    hi: "अगले कुछ दिनों में डॉक्टर से मिलने का समय लें। अगर आपको चिंता है, तो इंतज़ार न करें: जल्दी डॉक्टर की सलाह लें।"
+
+high_emergency_probability:
+  en: "Based on similar cases, please get seen today rather than waiting."
+  te: "ఇలాంటి కేసుల ఆధారంగా, ఎదురుచూడకుండా ఈ రోజే వైద్యుడిని కలవండి."
+  hi: "ऐसे ही मामलों के आधार पर, इंतज़ार न करें और आज ही डॉक्टर को दिखाएं।"
+
+# Shown with every URGENT and ROUTINE result (safety-netting).
+safety_net:
+  title:
+    en: "Call 112 / 108 or go to the emergency department immediately if:"
+    te: "ఇవి కనిపిస్తే వెంటనే 112 / 108 కి కాల్ చేయండి లేదా అత్యవసర విభాగానికి వెళ్ళండి:"
+    hi: "इनमें से कुछ भी हो तो तुरंत 112 / 108 पर कॉल करें या आपातकालीन विभाग जाएं:"
+  items:
+    en:
+      - "breathing becomes difficult, or lips turn blue or grey"
+      - "chest pain or pressure, especially spreading to the arm, jaw or back"
+      - "face drooping, weakness on one side, or difficulty speaking"
+      - "fainting, confusion, or a seizure (fit)"
+      - "heavy bleeding that does not stop"
+      - "swelling of the lips, tongue or throat"
+      - "your symptoms get much worse"
+    te:
+      - "శ్వాస తీసుకోవడం కష్టమైతే, లేదా పెదవులు నీలం / బూడిద రంగులోకి మారితే"
+      - "ఛాతీ నొప్పి లేదా బరువు, ముఖ్యంగా చేయి, దవడ లేదా వీపుకు పాకితే"
+      - "ముఖం ఒక వైపు వాలిపోతే, ఒక వైపు బలహీనత లేదా మాట్లాడటం కష్టమైతే"
+      - "స్పృహ తప్పితే, అయోమయంగా ఉంటే, లేదా ఫిట్స్ వస్తే"
+      - "ఆగని ఎక్కువ రక్తస్రావం"
+      - "పెదవులు, నాలుక లేదా గొంతు వాపు"
+      - "మీ లక్షణాలు చాలా ఎక్కువైతే"
+    hi:
+      - "सांस लेने में कठिनाई हो, या होंठ नीले / भूरे पड़ जाएं"
+      - "सीने में दर्द या दबाव, खासकर हाथ, जबड़े या पीठ तक फैलता हुआ"
+      - "चेहरा एक तरफ लटक जाए, एक तरफ कमजोरी, या बोलने में कठिनाई"
+      - "बेहोशी, भ्रम, या दौरा पड़ना"
+      - "भारी रक्तस्राव जो न रुके"
+      - "होंठ, जीभ या गले में सूजन"
+      - "आपके लक्षण बहुत बढ़ जाएं"
+
+self_care_info:
+  en: "General information: rest, drink enough fluids and keep track of your symptoms. This is not treatment advice. Do not start, stop or change any medicine without a doctor's advice."
+  te: "సాధారణ సమాచారం: విశ్రాంతి తీసుకోండి, తగినన్ని ద్రవాలు తాగండి, మీ లక్షణాలను గమనిస్తూ ఉండండి. ఇది చికిత్స సలహా కాదు. వైద్యుడి సలహా లేకుండా ఏ మందునూ మొదలుపెట్టకండి, ఆపకండి లేదా మార్చకండి."
+  hi: "सामान्य जानकारी: आराम करें, पर्याप्त तरल पदार्थ पिएं और अपने लक्षणों पर नज़र रखें। यह इलाज की सलाह नहीं है। डॉक्टर की सलाह के बिना कोई दवा शुरू, बंद या बदलें नहीं।"
+
+mental_health_support:
+  en: "You are not alone. Tele-MANAS (free, 24/7, many languages): call 14416 or 1-800-891-4416."
+  te: "మీరు ఒంటరి కాదు. టెలీ-మానస్ (ఉచితం, 24 గంటలు, అనేక భాషల్లో): 14416 లేదా 1-800-891-4416 కి కాల్ చేయండి."
+  hi: "आप अकेले नहीं हैं। टेली-मानस (मुफ़्त, 24 घंटे, कई भाषाओं में): 14416 या 1-800-891-4416 पर कॉल करें।"
+
+unclear_input:
+  en: "We could not reliably identify your symptoms from your description, so we cannot give a lower urgency level. Please get a medical assessment today."
+  te: "మీ వివరణ నుండి మీ లక్షణాలను మేము సరిగ్గా గుర్తించలేకపోయాము, కాబట్టి తక్కువ అత్యవసర స్థాయిని ఇవ్వలేము. దయచేసి ఈ రోజే వైద్య పరీక్ష చేయించుకోండి."
+  hi: "आपके विवरण से हम आपके लक्षण ठीक से पहचान नहीं पाए, इसलिए हम कम तत्काल स्तर नहीं दे सकते। कृपया आज ही डॉक्टर से जांच कराएं।"
+
+age_missing:
+  en: "Your age was not provided, so the assessment could not use the model and stays at least 'Urgent'."
+  te: "మీ వయస్సు ఇవ్వలేదు, కాబట్టి అంచనా కనీసం 'త్వరగా' స్థాయిలోనే ఉంటుంది."
+  hi: "आपकी उम्र नहीं बताई गई, इसलिए आकलन कम से कम 'तत्काल' स्तर पर रहेगा।"
+
+reason_headers:
+  symptoms:   {en: "Symptoms we understood", te: "మేము గుర్తించిన లక్షణాలు", hi: "हमने जो लक्षण समझे"}
+  denied:     {en: "Symptoms you said you do NOT have", te: "మీకు లేవని చెప్పిన లక్షణాలు", hi: "जो लक्षण आपने कहा कि नहीं हैं"}
+  warnings:   {en: "Warning signs found", te: "కనిపించిన హెచ్చరిక సంకేతాలు", hi: "पाए गए चेतावनी संकेत"}
+  model_path: {en: "How the decision tree reached its result", te: "నిర్ణయ వృక్షం ఫలితానికి ఎలా చేరింది", hi: "डिसीजन ट्री इस नतीजे तक कैसे पहुंचा"}
+  next:       {en: "What to do next", te: "తరువాత ఏమి చేయాలి", hi: "आगे क्या करें"}
+
+disclaimer:
+  en: "This application provides preliminary symptom information and urgency guidance only. It does not diagnose diseases, prescribe treatments, or replace a qualified healthcare professional. If you believe you are experiencing a medical emergency, seek emergency medical assistance immediately."
+  te: "ఈ అప్లికేషన్ ప్రాథమిక లక్షణాల సమాచారం మరియు అత్యవసర స్థాయి మార్గదర్శకత్వం మాత్రమే ఇస్తుంది. ఇది వ్యాధులను నిర్ధారించదు, చికిత్సలను సూచించదు, లేదా అర్హత కలిగిన వైద్య నిపుణుడికి ప్రత్యామ్నాయం కాదు. మీకు వైద్య అత్యవసర పరిస్థితి ఉందని మీరు భావిస్తే, వెంటనే అత్యవసర వైద్య సహాయం పొందండి."
+  hi: "यह एप्लिकेशन केवल प्रारंभिक लक्षण जानकारी और तत्कालता मार्गदर्शन देता है। यह बीमारियों का निदान नहीं करता, इलाज नहीं बताता, और किसी योग्य स्वास्थ्य पेशेवर का विकल्प नहीं है। अगर आपको लगता है कि आपको चिकित्सा आपातकाल है, तो तुरंत आपातकालीन चिकित्सा सहायता लें।"
+
+prototype_notice:
+  en: "Educational prototype: not clinically validated. Safety rules and translations are pending clinical and native-speaker review."
+  te: "విద్యా నమూనా: క్లినికల్‌గా ధృవీకరించబడలేదు. భద్రతా నియమాలు మరియు అనువాదాలు వైద్య నిపుణులు మరియు స్థానిక భాషా నిపుణుల సమీక్ష కోసం వేచి ఉన్నాయి."
+  hi: "शैक्षिक प्रोटोटाइप: चिकित्सकीय रूप से मान्य नहीं। सुरक्षा नियम और अनुवाद चिकित्सक और मूल भाषी समीक्षा के लिए लंबित हैं।"
+
+# ---------------------------------------------------------------------------------- questions
+questions:
+  age:
+    en: "How old is the person with these symptoms? (years; for babies, enter e.g. 0.5 for 6 months)"
+    te: "ఈ లక్షణాలు ఉన్న వ్యక్తి వయస్సు ఎంత? (సంవత్సరాలలో; శిశువులకు, ఉదా. 6 నెలలకు 0.5)"
+    hi: "जिस व्यक्ति को ये लक्षण हैं उसकी उम्र क्या है? (सालों में; शिशुओं के लिए, जैसे 6 महीने के लिए 0.5)"
+  pain:
+    en: "On a scale of 0 (none) to 10 (worst imaginable), how bad is the pain or discomfort?"
+    te: "0 (అసలు లేదు) నుండి 10 (భరించలేనంత) వరకు, నొప్పి లేదా ఇబ్బంది ఎంత ఉంది?"
+    hi: "0 (बिल्कुल नहीं) से 10 (सबसे ज़्यादा) तक, दर्द या तकलीफ कितनी है?"
+  onset:
+    en: "Did the {symptom} start suddenly (within minutes) or gradually?"
+    te: "{symptom} అకస్మాత్తుగా (నిమిషాల్లో) మొదలైందా లేదా నెమ్మదిగా మొదలైందా?"
+    hi: "{symptom} अचानक (कुछ मिनटों में) शुरू हुआ या धीरे-धीरे?"
+  onset_options:
+    sudden:  {en: "Suddenly", te: "అకస్మాత్తుగా", hi: "अचानक"}
+    gradual: {en: "Gradually", te: "నెమ్మదిగా", hi: "धीरे-धीरे"}
+    unsure:  {en: "Not sure", te: "తెలియదు", hi: "पता नहीं"}
+  duration:
+    en: "How long have you had the {symptom}?"
+    te: "{symptom} ఎన్ని రోజులుగా ఉంది?"
+    hi: "{symptom} कितने समय से है?"
+  duration_options:
+    lt1: {en: "Less than 1 day", te: "1 రోజు కంటే తక్కువ", hi: "1 दिन से कम"}
+    d1_4: {en: "1 to 4 days", te: "1 నుండి 4 రోజులు", hi: "1 से 4 दिन"}
+    d5p: {en: "5 days or more", te: "5 రోజులు లేదా ఎక్కువ", hi: "5 दिन या ज़्यादा"}
+  checklist:
+    en: "Do you also have any of the following? Select all that apply."
+    te: "మీకు ఈ క్రింది వాటిలో ఏమైనా కూడా ఉన్నాయా? వర్తించేవన్నీ ఎంచుకోండి."
+    hi: "क्या आपको इनमें से कुछ भी है? जो लागू हों सब चुनें।"
+  emergency_checklist:
+    en: "We could not understand your description fully. Is the person experiencing any of these right now?"
+    te: "మీ వివరణను మేము పూర్తిగా అర్థం చేసుకోలేకపోయాము. ఆ వ్యక్తికి ఇప్పుడు వీటిలో ఏమైనా ఉన్నాయా?"
+    hi: "हम आपका विवरण पूरी तरह समझ नहीं पाए। क्या उस व्यक्ति को अभी इनमें से कुछ हो रहा है?"
+  none_of_these: {en: "None of these", te: "వీటిలో ఏదీ లేదు", hi: "इनमें से कुछ नहीं"}
+  pregnant:
+    en: "Is the person pregnant?"
+    te: "ఆ వ్యక్తి గర్భవతిగా ఉన్నారా?"
+    hi: "क्या वह व्यक्ति गर्भवती है?"
+  yes_no:
+    "yes": {en: "Yes", te: "అవును", hi: "हाँ"}
+    "no":  {en: "No", te: "కాదు", hi: "नहीं"}
+
+# Translated rule titles (English titles live in red_flags.yaml)
+rule_titles:
+  EM_BREATHING:                 {te: "తీవ్రమైన శ్వాస ఇబ్బంది", hi: "सांस लेने में गंभीर तकलीफ"}
+  EM_CHEST_PAIN:                {te: "గుండెపోటు హెచ్చరిక లక్షణాలతో ఛాతీ నొప్పి", hi: "दिल के दौरे के चेतावनी लक्षणों के साथ सीने में दर्द"}
+  EM_STROKE:                    {te: "పక్షవాతం (స్ట్రోక్) హెచ్చరిక సంకేతాలు", hi: "स्ट्रोक (लकवा) के चेतावनी संकेत"}
+  EM_THUNDERCLAP_HEADACHE:      {te: "అకస్మాత్తుగా తీవ్రమైన తలనొప్పి లేదా ప్రమాద సంకేతాలతో తలనొప్పి", hi: "अचानक बहुत तेज सिरदर्द या खतरे के संकेतों के साथ सिरदर्द"}
+  EM_UNCONSCIOUS:               {te: "స్పృహ లేకపోవడం / స్పందించకపోవడం", hi: "बेहोशी / प्रतिक्रिया न देना"}
+  EM_SEIZURE:                   {te: "ఫిట్స్ (మూర్ఛ)", hi: "दौरा (मिर्गी का दौरा)"}
+  EM_ANAPHYLAXIS:               {te: "తీవ్రమైన అలర్జీ ప్రతిచర్య అనుమానం", hi: "गंभीर एलर्जी प्रतिक्रिया की आशंका"}
+  EM_MENINGITIS_SEPSIS:         {te: "మెనింజైటిస్ లేదా సెప్సిస్ హెచ్చరిక సంకేతాలు", hi: "मेनिनजाइटिस या सेप्सिस के चेतावनी संकेत"}
+  EM_SUDDEN_CONFUSION:          {te: "అకస్మాత్తుగా అయోమయం", hi: "अचानक भ्रम"}
+  EM_HEAD_INJURY:               {te: "ప్రమాద సంకేతాలతో తలకు గాయం", hi: "खतरे के संकेतों के साथ सिर में चोट"}
+  EM_GI_BLEED_OR_ACUTE_ABDOMEN: {te: "రక్తం వాంతి, మలంలో ఎక్కువ రక్తం లేదా అకస్మాత్తుగా తీవ్రమైన కడుపు నొప్పి", hi: "खून की उल्टी, मल में ज़्यादा खून या अचानक तेज़ पेट दर्द"}
+  EM_COUGHING_BLOOD:            {te: "ప్రమాద సంకేతాలతో దగ్గులో రక్తం", hi: "खतरे के संकेतों के साथ खांसी में खून"}
+  EM_HEAVY_BLEEDING:            {te: "ఎక్కువ లేదా ఆగని రక్తస్రావం", hi: "भारी या न रुकने वाला रक्तस्राव"}
+  EM_PREGNANCY:                 {te: "గర్భధారణలో రక్తస్రావం లేదా తీవ్రమైన నొప్పి", hi: "गर्भावस्था में रक्तस्राव या तेज़ दर्द"}
+  EM_INFANT_FEVER:              {te: "3 నెలల లోపు శిశువుకు జ్వరం", hi: "3 महीने से छोटे शिशु को बुखार"}
+  EM_SUICIDE_RISK:              {te: "ఆత్మహత్య లేదా స్వీయ హాని ఆలోచనలు", hi: "आत्महत्या या खुद को नुकसान पहुंचाने के विचार"}
+  UR_CHEST_SYMPTOMS:            {te: "ఛాతీ నొప్పి లేదా బిగుతు", hi: "सीने में दर्द या जकड़न"}
+  UR_BREATHLESSNESS:            {te: "ఆయాసం లేదా పిల్లికూతలు", hi: "सांस फूलना या घरघराहट"}
+  UR_FAINTING:                  {te: "స్పృహ తప్పడం", hi: "बेहोश होना"}
+  UR_BLEEDING:                  {te: "కారణం తెలియని రక్తస్రావం", hi: "बिना वजह रक्तस्राव"}
+  UR_NEURO:                     {te: "కొత్త నరాల సంబంధిత లక్షణాలు", hi: "नए तंत्रिका संबंधी लक्षण"}
+  UR_URINARY_RETENTION:         {te: "మూత్రం రాకపోవడం", hi: "पेशाब न होना"}
+  UR_PREGNANCY:                 {te: "గర్భధారణలో నొప్పి లేదా రక్తస్రావం", hi: "गर्भावस्था में दर्द या रक्तस्राव"}
+  UR_PROLONGED_FEVER:           {te: "5 రోజులు లేదా అంతకంటే ఎక్కువ రోజులుగా జ్వరం", hi: "5 दिन या उससे ज़्यादा समय से बुखार"}
+  UR_YOUNG_INFANT:              {te: "3 నెలల లోపు శిశువులో ఏదైనా లక్షణం", hi: "3 महीने से छोटे शिशु में कोई भी लक्षण"}
+  UR_SEVERE_SYMPTOM:            {te: "తీవ్రంగా ఉన్నట్టు చెప్పిన లక్షణం", hi: "गंभीर बताया गया लक्षण"}
+  UR_MENTAL_HEALTH_CRISIS:      {te: "భ్రాంతులు (గొంతులు వినిపించడం / లేనివి కనిపించడం)", hi: "मतिभ्रम (आवाज़ें सुनना / चीज़ें दिखना)"}

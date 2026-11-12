@@ -1,0 +1,84 @@
+# Experiment 4 - emergency warning detection (text -> NLP -> safety rules).
+# SYNTHETIC, developer-written. Expected levels follow the quoted guideline text in
+# knowledge/red_flags.yaml, so this tests whether the rules ENCODE the guidance correctly,
+# not whether the guidance is clinically right for every patient.
+#
+# level: EMERGENCY | URGENT | NONE (no rule fires)      rules: rule ids that must fire (subset)
+# understood: false -> no symptom should be recognised
+cases:
+  # ======================= ENGLISH: emergency =======================
+  - {id: E01, lang: en, cat: emergency, text: "I suddenly have crushing chest pain and I'm sweating", level: EMERGENCY, rules: [EM_CHEST_PAIN]}
+  - {id: E02, lang: en, cat: emergency, text: "My chest hurts and the pain is spreading to my left arm", level: EMERGENCY, rules: [EM_CHEST_PAIN]}
+  - {id: E03, lang: en, cat: emergency, text: "I can't breathe and my lips are turning blue", level: EMERGENCY, rules: [EM_BREATHING]}
+  - {id: E04, lang: en, cat: emergency, text: "My dad's face is drooping and he can't speak properly", level: EMERGENCY, rules: [EM_STROKE]}
+  - {id: E05, lang: en, cat: emergency, text: "Worst headache of my life, came on suddenly", level: EMERGENCY, rules: [EM_THUNDERCLAP_HEADACHE]}
+  - {id: E06, lang: en, cat: emergency, text: "My mother is unconscious and not responding", level: EMERGENCY, rules: [EM_UNCONSCIOUS]}
+  - {id: E07, lang: en, cat: emergency, text: "My son had a seizure 10 minutes ago", level: EMERGENCY, rules: [EM_SEIZURE]}
+  - {id: E08, lang: en, cat: emergency, text: "After eating peanuts my tongue is swelling and I'm wheezing", level: EMERGENCY, rules: [EM_ANAPHYLAXIS]}
+  - {id: E09, lang: en, cat: emergency, text: "High fever and a stiff neck, light hurts my eyes", level: EMERGENCY, rules: [EM_MENINGITIS_SEPSIS]}
+  - {id: E10, lang: en, cat: emergency, text: "My grandmother suddenly became confused today", level: EMERGENCY, rules: [EM_SUDDEN_CONFUSION]}
+  - {id: E11, lang: en, cat: emergency, text: "I hit my head and now I keep vomiting", level: EMERGENCY, rules: [EM_HEAD_INJURY]}
+  - {id: E12, lang: en, cat: emergency, text: "I vomited blood this morning", level: EMERGENCY, rules: [EM_GI_BLEED_OR_ACUTE_ABDOMEN]}
+  - {id: E13, lang: en, cat: emergency, text: "Coughing up blood and short of breath", level: EMERGENCY, rules: [EM_COUGHING_BLOOD]}
+  - {id: E14, lang: en, cat: emergency, text: "I cut my hand and the bleeding won't stop", level: EMERGENCY, rules: [EM_HEAVY_BLEEDING]}
+  - {id: E15, lang: en, cat: emergency, text: "I'm 12 weeks pregnant with vaginal bleeding and I feel dizzy", level: EMERGENCY, rules: [EM_PREGNANCY]}
+  - {id: E16, lang: en, cat: emergency, text: "My 6 week old baby has a fever", level: EMERGENCY, rules: [EM_INFANT_FEVER]}
+  - {id: E17, lang: en, cat: emergency, text: "I want to end my life", level: EMERGENCY, rules: [EM_SUICIDE_RISK]}
+  - {id: E18, lang: en, cat: emergency, text: "Severe stomach pain that started suddenly", level: EMERGENCY, rules: [EM_GI_BLEED_OR_ACUTE_ABDOMEN]}
+  # ======================= ENGLISH: urgent floor =======================
+  - {id: U01, lang: en, cat: urgent, text: "I have chest pain that comes and goes", level: URGENT, rules: [UR_CHEST_SYMPTOMS]}
+  - {id: U02, lang: en, cat: urgent, text: "I get short of breath when I climb stairs", level: URGENT, rules: [UR_BREATHLESSNESS]}
+  - {id: U03, lang: en, cat: urgent, text: "I fainted yesterday but feel fine now", level: URGENT, rules: [UR_FAINTING]}
+  - {id: U04, lang: en, cat: urgent, text: "There is blood in my urine", level: URGENT, rules: [UR_BLEEDING]}
+  - {id: U05, lang: en, cat: urgent, text: "I've had a fever for 6 days", level: URGENT, rules: [UR_PROLONGED_FEVER]}
+  - {id: U06, lang: en, cat: urgent, text: "Terrible back pain", level: URGENT, rules: [UR_SEVERE_SYMPTOM]}
+  - {id: U07, lang: en, cat: urgent, text: "Some numbness in my fingers for a few weeks", level: URGENT, rules: [UR_NEURO]}
+  - {id: U08, lang: en, cat: urgent, text: "I'm pregnant and have a headache", level: URGENT, rules: [UR_PREGNANCY]}
+  # ======================= ENGLISH: routine (no rule) =======================
+  - {id: R01, lang: en, cat: routine, text: "I have a runny nose and sneezing", level: NONE}
+  - {id: R02, lang: en, cat: routine, text: "Mild sore throat since yesterday", level: NONE}
+  - {id: R03, lang: en, cat: routine, text: "I have a cough for two days", level: NONE}
+  - {id: R04, lang: en, cat: routine, text: "Itchy rash on my arm", level: NONE}
+  - {id: R05, lang: en, cat: routine, text: "I feel tired and have a mild headache", level: NONE}
+  - {id: R06, lang: en, cat: routine, text: "No chest pain, no breathing problems, just a blocked nose", level: NONE}
+  # ======================= ENGLISH: not understood / ambiguous =======================
+  - {id: X01, lang: en, cat: unrecognised, text: "I don't feel right", level: NONE, understood: false}
+  - {id: X02, lang: en, cat: unrecognised, text: "Something is wrong with me", level: NONE, understood: false}
+  - {id: A01, lang: en, cat: ambiguous, text: "Maybe I have chest pain, not sure", level: URGENT, rules: [UR_CHEST_SYMPTOMS]}
+  - {id: A02, lang: en, cat: ambiguous, text: "I had chest pain last week but it's gone now", level: URGENT, rules: [UR_CHEST_SYMPTOMS]}
+
+  # ======================= TELUGU =======================
+  - {id: TE01, lang: te, cat: emergency, text: "ఛాతీ నొప్పి ఎడమ చేతికి పాకుతోంది", level: EMERGENCY, rules: [EM_CHEST_PAIN]}
+  - {id: TE02, lang: te, cat: emergency, text: "ఊపిరి అందడం లేదు, పెదవులు నీలంగా మారుతున్నాయి", level: EMERGENCY, rules: [EM_BREATHING]}
+  - {id: TE03, lang: te, cat: emergency, text: "ముఖం ఒక వైపు వాలిపోయింది", level: EMERGENCY, rules: [EM_STROKE]}
+  - {id: TE04, lang: te, cat: emergency, text: "మా అమ్మ స్పృహలో లేరు", level: EMERGENCY, rules: [EM_UNCONSCIOUS]}
+  - {id: TE05, lang: te, cat: emergency, text: "మా బాబుకి ఫిట్స్ వచ్చాయి", level: EMERGENCY, rules: [EM_SEIZURE]}
+  - {id: TE06, lang: te, cat: emergency, text: "రక్తం వాంతి అయింది", level: EMERGENCY, rules: [EM_GI_BLEED_OR_ACUTE_ABDOMEN]}
+  - {id: TE07, lang: te, cat: emergency, text: "నాకు చనిపోవాలని ఉంది", level: EMERGENCY, rules: [EM_SUICIDE_RISK]}
+  - {id: TE08, lang: te, cat: emergency, text: "జ్వరం, మెడ పట్టేసింది", level: EMERGENCY, rules: [EM_MENINGITIS_SEPSIS]}
+  - {id: TE09, lang: te, cat: urgent, text: "అప్పుడప్పుడు ఛాతీ నొప్పి వస్తోంది", level: URGENT, rules: [UR_CHEST_SYMPTOMS]}
+  - {id: TE10, lang: te, cat: urgent, text: "మెట్లు ఎక్కితే ఆయాసం వస్తోంది", level: URGENT, rules: [UR_BREATHLESSNESS]}
+  - {id: TE11, lang: te, cat: urgent, text: "ఆరు రోజులుగా జ్వరం", level: URGENT, rules: [UR_PROLONGED_FEVER]}
+  - {id: TE12, lang: te, cat: urgent, text: "తీవ్రమైన నడుము నొప్పి", level: URGENT, rules: [UR_SEVERE_SYMPTOM]}
+  - {id: TE13, lang: te, cat: routine, text: "జలుబు, తుమ్ములు ఉన్నాయి", level: NONE}
+  - {id: TE14, lang: te, cat: routine, text: "కొంచెం గొంతు నొప్పి", level: NONE}
+  - {id: TE15, lang: te, cat: routine, text: "ఛాతీ నొప్పి లేదు, ఆయాసం లేదు, దగ్గు మాత్రమే ఉంది", level: NONE}
+  - {id: TE16, lang: te, cat: unrecognised, text: "నాకు ఏదో తేడాగా ఉంది", level: NONE, understood: false}
+
+  # ======================= HINDI =======================
+  - {id: HI01, lang: hi, cat: emergency, text: "सीने में दर्द बाएं हाथ तक फैल रहा है", level: EMERGENCY, rules: [EM_CHEST_PAIN]}
+  - {id: HI02, lang: hi, cat: emergency, text: "सांस नहीं आ रही, होंठ नीले पड़ गए", level: EMERGENCY, rules: [EM_BREATHING]}
+  - {id: HI03, lang: hi, cat: emergency, text: "चेहरा टेढ़ा हो गया और बोलने में दिक्कत है", level: EMERGENCY, rules: [EM_STROKE]}
+  - {id: HI04, lang: hi, cat: emergency, text: "मेरी मां बेहोश है, जाग नहीं रही", level: EMERGENCY, rules: [EM_UNCONSCIOUS]}
+  - {id: HI05, lang: hi, cat: emergency, text: "मेरे बेटे को दौरा पड़ा", level: EMERGENCY, rules: [EM_SEIZURE]}
+  - {id: HI06, lang: hi, cat: emergency, text: "खून की उल्टी हुई", level: EMERGENCY, rules: [EM_GI_BLEED_OR_ACUTE_ABDOMEN]}
+  - {id: HI07, lang: hi, cat: emergency, text: "मैं आत्महत्या करना चाहता हूं", level: EMERGENCY, rules: [EM_SUICIDE_RISK]}
+  - {id: HI08, lang: hi, cat: emergency, text: "बुखार है और गर्दन में अकड़न है", level: EMERGENCY, rules: [EM_MENINGITIS_SEPSIS]}
+  - {id: HI09, lang: hi, cat: urgent, text: "कभी कभी सीने में दर्द होता है", level: URGENT, rules: [UR_CHEST_SYMPTOMS]}
+  - {id: HI10, lang: hi, cat: urgent, text: "सीढ़ियां चढ़ने पर सांस फूलती है", level: URGENT, rules: [UR_BREATHLESSNESS]}
+  - {id: HI11, lang: hi, cat: urgent, text: "छह दिन से बुखार है", level: URGENT, rules: [UR_PROLONGED_FEVER]}
+  - {id: HI12, lang: hi, cat: urgent, text: "कमर में बहुत तेज दर्द है", level: URGENT, rules: [UR_SEVERE_SYMPTOM]}
+  - {id: HI13, lang: hi, cat: routine, text: "जुकाम और छींक आ रही है", level: NONE}
+  - {id: HI14, lang: hi, cat: routine, text: "हल्का गले में दर्द", level: NONE}
+  - {id: HI15, lang: hi, cat: routine, text: "सीने में दर्द नहीं है, सांस भी ठीक है, बस खांसी है", level: NONE}
+  - {id: HI16, lang: hi, cat: unrecognised, text: "कुछ ठीक नहीं लग रहा", level: NONE, understood: false}
